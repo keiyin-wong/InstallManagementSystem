@@ -10,8 +10,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<context:component-scan
-		base-package="controller" />
+	<context:component-scan base-package="controller" />
 
 <!-- 	<mvc:annotation-driven>
 	     <mvc:message-converters>
@@ -37,4 +36,20 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 			<value>.jsp</value>
 		</property>
 	</bean>
+	
+	<bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">    
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>    
+		<property name="url" value="jdbc:mysql://localhost:3306/installation"></property>    
+		<property name="username" value="keiyin"></property>    
+		<property name="password" value="keiyin"></property>    
+	</bean>
+	
+	<bean id="jt" class="org.springframework.jdbc.core.JdbcTemplate">    
+		<property name="dataSource" ref="ds"></property>    
+	</bean>
+	
+	<bean id="dao" class="dao.ProductDAO">    
+		<property name="template" ref="jt"></property>    
+	</bean>  
+	
 </beans>
