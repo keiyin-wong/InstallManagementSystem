@@ -1,14 +1,12 @@
-<%@page import="java.util.List"%>
-<%@page import="domain.Product"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
+
 <!--<![endif]-->
 <head>
 <!-- 
@@ -16,6 +14,7 @@ Kool Store Template
 http://www.templatemo.com/preview/templatemo_428_kool_store
 -->
 <meta charset="utf-8">
+
 <title>Kool Store - Responsive eCommerce Template</title>
 
 <meta name="description" content="">
@@ -25,359 +24,436 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 	href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800"
 	rel="stylesheet">
 
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/normalize.min.css">
-<link rel="stylesheet" href="css/font-awesome.min.css">
-<link rel="stylesheet" href="css/animate.css">
-<link rel="stylesheet" href="css/templatemo-misc.css">
-<link rel="stylesheet" href="css/templatemo-style.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/bootstrap.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/normalize.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/animate.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/templatemo-misc.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/templatemo-style.css">
 
-<script src="js/vendor/modernizr-2.6.2.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/vendor/modernizr-2.6.2.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/js/vendor/jquery-1.10.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.easing-1.3.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
+<script src="${pageContext.request.contextPath}/js/plugins.js"></script>
+<script src="${pageContext.request.contextPath}/js/main.js"></script>
 
+
+<style>
+.delete:hover {
+	background-color: #713031;
+}
+
+.delete.selected {
+	background-color: #713031;
+}
+
+.delete.selected .deleteBox {
+	opacity: 1;
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
+	filter: alpha(opacity = 100);
+	top: -110px;
+	width: 275px;
+	height: 100px;
+	overflow: visible;
+	-webkit-transition: opacity 0.3s, top 0.3s, width 0s, height 0s;
+	-webkit-transition-delay: 0s, 0s, 0s, 0s;
+	-moz-transition: opacity 0.3s, top 0.3s, width 0s 0s, height 0s 0s;
+	-o-transition: opacity 0.3s, top 0.3s, width 0s 0s, height 0s 0s;
+	transition: opacity 0.3s, top 0.3s, width 0s 0s, height 0s 0s;
+	z-index: 2;
+	position: absolute;
+	top: -110px;
+}
+
+.delete .deleteBox {
+	position: absolute;
+	top: -90px;
+	left: 50%;
+	margin-left: -137px;
+	overflow: hidden;
+	background: #1C242B;
+	width: 0px;
+	height: 0px;
+	border-radius: 5px;
+	text-indent: 0px;
+	cursor: default;
+	opacity: 0;
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
+	filter: alpha(opacity = 0);
+	-webkit-transition: opacity 0.3s, top 0.3s, width 0s, height 0s;
+	-webkit-transition-delay: 0s, 0s, 0.3s, 0.3s;
+	-moz-transition: opacity 0.3s, top 0.3s, width 0s 0.3s, height 0s 0.3s;
+	-o-transition: opacity 0.3s, top 0.3s, width 0s 0.3s, height 0s 0.3s;
+	transition: opacity 0.3s, top 0.3s, width 0s 0.3s, height 0s 0.3s;
+	z-index: -1;
+}
+
+.delete .deleteBox:after {
+	content: '';
+	display: block;
+	width: 0px;
+	left: 0px;
+	border-top: 5px solid #1C242B;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	position: absolute;
+	bottom: -5px;
+	left: 50%;
+	margin-left: -5px;
+}
+
+.delete .deleteBox p {
+	margin: 10px 0 3px;
+}
+
+.delete .deleteBox span {
+	display: -moz-inline-stack;
+	display: inline-block;
+	vertical-align: middle;
+	*vertical-align: auto;
+	zoom: 1;
+	*display: inline;
+	margin: 0 10px;
+	color: #FFF;
+	border-radius: 3px;
+	width: 80px;
+	height: 25px;
+	line-height: 25px;
+	cursor: pointer;
+	-webkit-transition: background 0.3s;
+	-moz-transition: background 0.3s;
+	-o-transition: background 0.3s;
+	transition: background 0.3s;
+}
+
+.delete .deleteBox span.confirm {
+	background: #38B87C;
+}
+
+.delete .deleteBox span.confirm:hover {
+	background: #2c9162;
+}
+
+.delete .deleteBox span.cancel {
+	background: #696F73;
+}
+
+.delete .deleteBox span.cancel:hover {
+	background: #515558;
+}
+
+.delete .deleteBox:before {
+	content: 'Deleting...';
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 0px;
+	height: 0px;
+	text-align: center;
+	line-height: 60px;
+	opacity: 0;
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
+	filter: alpha(opacity = 0);
+	border-radius: 5px;
+	background: #1c242b
+		url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSJ3aGl0ZSI+CiAgPGNpcmNsZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4IDApIiBjeD0iMCIgY3k9IjE2IiByPSIwIj4gCiAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJyIiB2YWx1ZXM9IjA7IDQ7IDA7IDAiIGR1cj0iMS4ycyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiIGJlZ2luPSIwIgogICAgICBrZXl0aW1lcz0iMDswLjI7MC43OzEiIGtleVNwbGluZXM9IjAuMiAwLjIgMC40IDAuODswLjIgMC42IDAuNCAwLjg7MC4yIDAuNiAwLjQgMC44IiBjYWxjTW9kZT0ic3BsaW5lIiAvPgogIDwvY2lyY2xlPgogIDxjaXJjbGUgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTYgMCkiIGN4PSIwIiBjeT0iMTYiIHI9IjAiPiAKICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9InIiIHZhbHVlcz0iMDsgNDsgMDsgMCIgZHVyPSIxLjJzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgYmVnaW49IjAuMyIKICAgICAga2V5dGltZXM9IjA7MC4yOzAuNzsxIiBrZXlTcGxpbmVzPSIwLjIgMC4yIDAuNCAwLjg7MC4yIDAuNiAwLjQgMC44OzAuMiAwLjYgMC40IDAuOCIgY2FsY01vZGU9InNwbGluZSIgLz4KICA8L2NpcmNsZT4KICA8Y2lyY2xlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0IDApIiBjeD0iMCIgY3k9IjE2IiByPSIwIj4gCiAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJyIiB2YWx1ZXM9IjA7IDQ7IDA7IDAiIGR1cj0iMS4ycyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiIGJlZ2luPSIwLjYiCiAgICAgIGtleXRpbWVzPSIwOzAuMjswLjc7MSIga2V5U3BsaW5lcz0iMC4yIDAuMiAwLjQgMC44OzAuMiAwLjYgMC40IDAuODswLjIgMC42IDAuNCAwLjgiIGNhbGNNb2RlPSJzcGxpbmUiIC8+CiAgPC9jaXJjbGU+Cjwvc3ZnPg==")
+		no-repeat center 50px;
+	-webkit-transition: opacity 0.3s, top 0.3s, left 0.3s;
+	-moz-transition: opacity 0.3s, top 0.3s, left 0.3s;
+	-o-transition: opacity 0.3s, top 0.3s, left 0.3s;
+	transition: opacity 0.3s, top 0.3s, left 0.3s;
+}
+
+.delete .deleteBox.loading:before {
+	opacity: 1;
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
+	filter: alpha(opacity = 100);
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+}
+
+.delete .deleteBox.deleted:before {
+	content: attr(title);
+	background: #1c242b
+		url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoKCSB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4KCjxwb2x5Z29uIGlkPSJjaGVjay1tYXJrLTctaWNvbiIgcG9pbnRzPSI1MCwyNDcuNzg3IDc3LjA5LDIxOS44MzMgMjA5Ljg1OSwyOTkuMjIyIDQzOC43ODcsODEuMjQ1IDQ2MiwxMDQuNSAyMTkuODYzLDQzMC43NTUgIiBmaWxsPSIjRkZGIi8+Cgo8L3N2Zz4=")
+		no-repeat center 55px;
+	background-size: 20px 20px;
+}
+</style>
+
+<script>
+	function deleteFunction(a) {
+		var answer = confirm("Delete data?");
+		//var b = {Delete:"Delete", productCode:a};
+		//var data = JSON.stringify(b);
+		//alert(data);
+		var data = "delete=Delete&productCode=" + a;
+		if (answer) {
+			//window.location.assign("EmployeeProductDetailsServlet?delete=Delete"+ "&productCode=" + a);
+			$.post("EmployeeProductDetailsServlet", data).done(function(data) {
+				alert(data);
+				location.reload();
+			});
+		} else {
+
+		}
+	}
+	function confirmDeleteModal(id) {
+		$('#deleteModal').modal();
+		$('#deleteButton').html(
+				'<a class="btn btn-danger" onclick="deleteData(' + id
+						+ ')">Delete</a>');
+	}
+	function deleteData(id) {
+		// do your stuffs with id
+		$("#successMessage").html(
+				"Record With id " + id + " Deleted successfully!");
+		$('#deleteModal').modal('hide'); // now close modal
+	}
+
+	function confirmEditModal(productNumber) {
+		$('#editModal').modal();
+		$.ajax({
+			type : "GET",
+			url : "getProduct?productNumber="+productNumber,
+			dataType : 'json',
+			success : function(data) {
+				$('#product_number').val(data.productNumber);
+				let date = new Date(data.date.year, data.date.monthValue-1, data.date.dayOfMonth);
+				$('#product_date').val(date.toISOString().slice(0, 10));
+			},
+			error : function(jgXHR) {
+				alert(jgXHR.responseText);
+			},
+		});
+		
+	}
+
+	function editData(id) {
+		// do your stuffs with id
+		$("#successMessage").html(
+				"Record With id " + id + " Deleted successfully!");
+		$('#deleteModal').modal('hide'); // now close modal
+	}
+
+	function renderTable(data) {
+		var tableBodyHtml = "";
+		if (data.length == 0) {
+			tableBodyHtml += "<tr><td colspan='6' style='text-align: center;'>No Records Found</td></tr>";
+		}
+		$.each(data, function() {
+			tableBodyHtml += "<tr><td>"
+					+ this.productNumber
+					+ "</td>"
+					+ '<td>'
+					+ this.date.month
+					+ '</td>'
+					+ '<td>'
+					+ "No total price first"
+					+ '</td>'
+					+ '<td>'
+					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="confirmEditModal('+this.productNumber+')">Edit</button>'
+					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal(112)">Delete</button>'
+					+ '</td>' + '</tr>';
+		});
+		$('#productTableBody').html(tableBodyHtml);
+	}
+
+	$.ajax({
+		type : "GET",
+		url : "productList",
+		dataType : 'json',
+		success : function(data) {
+			renderTable(data);
+		},
+		error : function(jgXHR) {
+			alert(jgXHR.responseText);
+		},
+	});
+</script>
 </head>
 <body>
 	<!--[if lt IE 7]>
     <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
-
-
-	<header class="site-header">
-
-		<div class="main-header">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 col-sm-6 col-xs-8">
-						<div class="logo">
-							<h1>
-								<a href="index.html">Kool Store</a>
-							</h1>
-						</div>
-						<!-- /.logo -->
-					</div>
-					<!-- /.col-md-4 -->
-					<div class="col-md-8 col-sm-6 col-xs-4">
-						<div class="main-menu">
-							<a href="#" class="toggle-menu"> <i class="fa fa-bars"></i>
-							</a>
-							<ul class="menu">
-								<li><a href="ProductPaginationServlet?currentPage=1">Product</a></li>
-								<li><a href="cart.jsp">Cart</a>
-								<li><a href="LogoutServlet">Logout</a></li>
-							</ul>
-						</div>
-						<!-- /.main-menu -->
-					</div>
-					<!-- /.col-md-8 -->
-				</div>
-				<!-- /.row -->
-			</div>
-			<!-- /.container -->
-		</div>
-		<!-- /.main-header -->
-
-	</header>
+	<header> </header>
 	<!-- /.site-header -->
 
-	<div class="content-section">
+	<div class="content-section" style="z-index: 1">
 		<main class='container' role='main'>
+			<h2 class="container"></h2>
 			<div class='container' style="margin-top: 60px">
-				<h2>Products list</h2>
+				<h2>Product list</h2>
+				<div class='row'>
+					<div class='col-xs-12'>
+						<div class='orders-filter-container' role='tabpanel'>
+							<ul class='nav nav-tabs' role='tablist'>
+								<li class='active' role='presentation'><a href='#'
+									role='tab'> Products </a></li>
+							</ul>
+							<div class='tab-content'>
+								<div class='tab-pane active' id='search' role='tabpanel'>
+									<button class="btn btn-primary" type="button"
+										onclick="window.location.href='EmployeeProductDetailsServlet?createProduct=CREATEPRODUCT'"
+										style="display: inline-block; margin-top: 10px; background-color: transparent; color: #428bca; border: 1px solid #ddd;">
+										Add a new product</button>
+								</div>
+								<div class='tab-pane active' id='filter' role='tabpanel'>
+									<div class='row'></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class='row' id="tableContent">
 					<div class='col-xs-12'>
 						<div class='table-responsive orders-list'>
 							<table class='table table-striped table-hover'>
-								<%
-								int currentPage = (int) request.getAttribute("currentPage");
-								int nOfPages = (int) request.getAttribute("nOfPages");
-								%>
-								<input type="hidden" name="currentPage" value="<%=currentPage%>" />
 								<thead>
 									<tr>
-										<th>Product Code</th>
-										<th>buy price</th>
-										<th>MSRP</th>
-										<th>description</th>
-										<th>name</th>
-										<th>scale</th>
-										<th>vendor</th>
-										<th>in stock</th>
-										<th>Add</th>
+										<th>Product Number</th>
+										<th>Date</th>
+										<th>Total Price</th>
+										<th>Action</th>
 									</tr>
 								</thead>
-								<tbody>
-									<%
-									List<Product> products = (List<Product>) request.getAttribute("products");
-									if (products.size() != 0) {
-										for (Product t : products) {
-											out.println("<tr>");
-											out.println("<td>" + t.getProductcode() + "</td>");
-											out.println("<td>" + t.getBuyprice() + "</td>");
-											out.println("<td>" + t.getMsrp() + "</td>");
-											out.println("<td>" + t.getProductdescription() + "</td>");
-											out.println("<td>" + t.getProductname() + "</td>");
-											out.println("<td>" + t.getProductscale()+ "</td>");
-											out.println("<td>" + t.getProductvendor() + "</td>");
-											out.println("<td>" + t.getQuantityinstock() + "</td>");
-											out.println("<td><a href=\"CartController?id=" + t.getProductcode() + "\">Add</a></td>");
-											out.println("</tr>");
-										}
-
-									} else {
-										out.println("<tr>");
-										String status = "No records";
-										for (int i = 0; i < 8; i++) {
-											out.println("<td>" + status + "</td>");
-										}
-										out.println("</tr>");
-										
-									}
-									%>
-									<!-- <tr>
-								<td><a href="/orders/ORD-12">ORD-12</a></td>
-								<td>Pizza Order</td>
-								<td><span><i class='fa fa-gears'></i> In progress</span></td>
-								<td>03/09/2021 13:10 PM</td>
-								<td>David Jones</td>
-								<td></td>
-								<td></td>
-							</tr> -->
+								<tbody id='productTableBody'>
+									<!-- 								<tr>
+									<td>P123</td>
+									<td>March</td>
+									<td>1</td>
+									<td>RM20</td>
+									<td>1200</td>
+									<td>900</td>
+									<td><button class="btn btn-danger delete" type="button"
+											value="qwe" onclick="confirmDeleteModal('112')" 
+											>Delete</button></td>
+								</tr> -->
 								<tbody>
 							</table>
 						</div>
 					</div>
-					<nav aria-label="Navigation for staffs">
-						<ul class="pagination">
-
-							<%
-							if (currentPage != 1 && nOfPages != 0) {
-							%>
-
-							<%
-							out.println("<li class=\"page-item\">");
-							out.println("<a class=\"page-link\" href=\"" + "ProductPaginationServlet?recordsPerPage=" + 10 + "&currentPage=1"
-									+ "\">First</a>");
-							out.println("</li>");
-							%>
-
-
-							<li class="page-item">
-								<%
-								out.println("<a class=\"page-link\" href=\"" + "ProductPaginationServlet?recordsPerPage=" + 10 + "&currentPage="
-										+ (currentPage - 1) + "\">Previous</a>");
-								%>
-							</li>
-							<%
-							}
-							%>
-							<%
-							if (currentPage < nOfPages) {
-								out.println("<li class=\"page-item\">");
-								out.println("<a class=\"page-link\" href=\"" + "ProductPaginationServlet?recordsPerPage=" + 10 + "&currentPage="
-								+ (currentPage + 1) + "\">Next</a>");
-								out.println("</li>");
-
-								out.println("<li class=\"page-item\">");
-								out.println("<a class=\"page-link\" href=\"" + "ProductPaginationServlet?recordsPerPage=" + 10 + "&currentPage=" + nOfPages
-								+ "\">Last</a>");
-								out.println("</li>");
-							}
-							%>
-
-						</ul>
-					</nav>
-					<%
-					if (nOfPages != 0) {
-						out.println("<p class=\"pageref\">");
-						out.println(currentPage + " of " + nOfPages);
-						out.println("</p>");
-					}
-
-					//out.println("Text of Text");
-					%>
-
 				</div>
 
 			</div>
-	</div>
-	</main>
+		</main>
 	</div>
 	<!-- /.content-section -->
 
-
-
-	<footer class="site-footer">
-		<div class="our-partner">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="customNavigation">
-							<a class="btn prev"><i class="fa fa-angle-left"></i></a> <a
-								class="btn next"><i class="fa fa-angle-right"></i></a>
-						</div>
-						<div id="owl-demo" class="owl-carousel">
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-1.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-2.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-1.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-2.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-1.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-2.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-1.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-2.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-1.jpg" alt=""></a>
-							</div>
-							<div class="item">
-								<a href="#"><img src="images/tm-170x80-2.jpg" alt=""></a>
-							</div>
-						</div>
-						<!-- /#owl-demo -->
-					</div>
-					<!-- /.col-md-12 -->
+	<!----modal starts here--->
+	<div id="deleteModal" class="modal fade" role='dialog'>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title">Delete</h4>
 				</div>
-				<!-- /.row -->
+				<div class="modal-body">
+					<p>Do You Really Want to Delete This ?</p>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<span id='deleteButton'></span>
+				</div>
+
 			</div>
-			<!-- /.container -->
 		</div>
-		<!-- /.our-partner -->
-		<div class="main-footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-3">
-						<div class="footer-widget">
-							<h3 class="widget-title">About Us</h3>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							Eligendi, debitis recusandae.
-							<ul class="follow-us">
-								<li><a href="#"><i class="fa fa-facebook"></i>Facebook</a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i>Twitter</a></li>
-							</ul>
-							<!-- /.follow-us -->
-						</div>
-						<!-- /.footer-widget -->
-					</div>
-					<!-- /.col-md-3 -->
-					<div class="col-md-3">
-						<div class="footer-widget">
-							<h3 class="widget-title">Why Choose Us?</h3>
-							Kool Store is free responsive eCommerce template provided by
-							templatemo website. You can use this layout for any website. <br>
-							<br>Tempore cum mollitia eveniet laboriosam corporis
-							voluptas earum voluptate. Lorem ipsum dolor sit amet. <br> <br>Credit
-							goes to <a rel="nofollow" href="http://unsplash.com">Unsplash</a>
-							for all images.
-						</div>
-						<!-- /.footer-widget -->
-					</div>
-					<!-- /.col-md-3 -->
-					<div class="col-md-2">
-						<div class="footer-widget">
-							<h3 class="widget-title">Useful Links</h3>
-							<ul>
-								<li><a href="#">Our Shop</a></li>
-								<li><a href="#">Partners</a></li>
-								<li><a href="#">Gift Cards</a></li>
-								<li><a href="#">About Us</a></li>
-								<li><a href="#">Help</a></li>
-							</ul>
-						</div>
-						<!-- /.footer-widget -->
-					</div>
-					<!-- /.col-md-2 -->
-					<div class="col-md-4">
-						<div class="footer-widget">
-							<h3 class="widget-title">Our Newsletter</h3>
-							<div class="newsletter">
-								<form action="#" method="get">
-									<p>Sign up for our regular updates to know when new
-										products are released.</p>
-									<input type="text" title="Email" name="email"
-										placeholder="Your Email Here"> <input type="submit"
-										class="s-button" value="Submit" name="Submit">
-								</form>
+	</div>
+
+	<div class="container">
+		<button type="button" class="btn btn-danger" data-toggle="modal"
+			data-target="#form">See Modal with Form</button>
+	</div>
+
+
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header border-bottom-0">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label" for="email1">Product Number</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="product_number" name="product_number" value=10001 readonly>
 							</div>
-							<!-- /.newsletter -->
 						</div>
-						<!-- /.footer-widget -->
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label" for="email1">Date</label>
+							<div class="col-sm-9">
+								<input type="date" class="form-control" id="product_date" name="product_date">
+							</div>
+						</div>
 					</div>
-					<!-- /.col-md-4 -->
-				</div>
-				<!-- /.row -->
-			</div>
-			<!-- /.container -->
-		</div>
-		<!-- /.main-footer -->
-		<div class="bottom-footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 text-center">
-						<span>Copyright &copy; 2084 <a href="#">Company Name</a> |
-							Design: <a href="http://www.templatemo.com">templatemo</a></span>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							Accusantium, expedita soluta mollitia accusamus ut architecto
-							maiores cum fugiat. Pariatur ipsum officiis fuga deleniti alias
-							quia nostrum veritatis enim doloremque eligendi?</p>
+					<div class='row attribute-row' style="margin-bottom: 10px;">
+						<div class='col-xs-12' title='Order Details:'>
+							<div style="display: inline-block;" class='value'>
+								<div class='col-xs-12'>
+									<div class='table-responsive orders-list'>
+										<table id="table" class='table table-striped table-hover'>
+											<thead>
+												<tr>
+													<th>Line Number</th>
+													<th>Product Code</th>
+													<th>Quantity Ordered</th>
+													<th>Price per each</th>
+													<th>Sum</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<!-- /.col-md-12 -->
-				</div>
-				<!-- /.row -->
+					<div
+						class="modal-footer border-top-0 d-flex justify-content-center">
+						<button type="submit" class="btn btn-success">Submit</button>
+					</div>
+				</form>
 			</div>
-			<!-- /.container -->
 		</div>
-		<!-- /.bottom-footer -->
-	</footer>
-	<!-- /.site-footer -->
+	</div>
 
 
-	<script src="js/vendor/jquery-1.10.1.min.js"></script>
+
+	<!--Modal ends here--->
+
 	<script>
 		window.jQuery
 				|| document
-						.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')
+						.write('<script src="${pageContext.request.contextPath}/js/vendor/jquery-1.10.1.min.js"><\/script>')
 	</script>
-	<script src="js/jquery.easing-1.3.js"></script>
-	<script src="js/bootstrap.js"></script>
-	<script src="js/plugins.js"></script>
-	<script src="js/main.js"></script>
-
-
-	<!-- Google Map -->
-	<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-	<script src="js/vendor/jquery.gmap3.min.js"></script>
-
-	<!-- Google Map Init-->
-	<script type="text/javascript">
-		jQuery(function($) {
-			$('.first-map, .map-holder').gmap3({
-				marker : {
-					address : '40.7828839,-73.9652425'
-				},
-				map : {
-					options : {
-						zoom : 15,
-						scrollwheel : false,
-						streetViewControl : true
-					}
-				}
-			});
-		});
-	</script>
-
 
 </body>
 </html>

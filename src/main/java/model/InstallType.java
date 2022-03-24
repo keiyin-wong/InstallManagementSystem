@@ -1,12 +1,18 @@
 package model;
 
-public class InstallPrice {
+public class InstallType {
+	int id;
 	String desc_eng;
 	String desc_chinese;
 	boolean diff_price;
 	double price;
 	
-	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getDesc_eng() {
 		return desc_eng;
 	}

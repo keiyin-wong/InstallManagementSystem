@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import model.InstallPrice;
+import model.InstallType;
  
 @Controller
 @RequestMapping(value = "/hello")
@@ -26,10 +26,10 @@ public class HelloWorldController {
 	}
 	
 	@RequestMapping(value = "/price", method = RequestMethod.GET)
-	public @ResponseBody InstallPrice getPriceDetails() {
+	public @ResponseBody InstallType getPriceDetails() {
 		System.out.println("Getting price");
  
-		InstallPrice installPrice = new InstallPrice();
+		InstallType installPrice = new InstallType();
 		installPrice.setDesc_eng("wall unit");
 		installPrice.setPrice(20);
 		
