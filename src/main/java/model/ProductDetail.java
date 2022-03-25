@@ -6,7 +6,14 @@ public class ProductDetail {
 	int productLineNumber;
 	double width;
 	double height;
+	double finalPrice;
 	
+	public double getFinalPrice() {
+		return finalPrice;
+	}
+	public void setFinalPrice(double finalPrice) {
+		this.finalPrice = finalPrice;
+	}
 	public String getProductNumber() {
 		return productNumber;
 	}

@@ -200,6 +200,33 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 </style>
 
 <script>
+	$(document).ready(function(){
+		renderMainTable();
+
+		$("#createProductForm").submit(function( event ) {
+			event.preventDefault();
+			var parameter = $('#createProductForm').serialize();
+			var spinner = $('#loader');
+			spinner.show();
+			$.ajax({
+				type: "POST",
+				url: "createProduct",
+				cache : false,
+				data: parameter,
+				success: function(data){
+					spinner.hide();
+					renderMainTable();
+					$('#createProductModel').modal('hide');
+				},
+				error : function(jgXHR){
+					spinner.hide();
+					alert(jgXHR.responseText);
+				}
+			}).done(function(){spinner.hide();});
+			
+		});
+	});
+
 	function deleteFunction(a) {
 		var answer = confirm("Delete data?");
 		//var b = {Delete:"Delete", productCode:a};
@@ -229,16 +256,47 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		$('#deleteModal').modal('hide'); // now close modal
 	}
 
-	function confirmEditModal(productNumber) {
-		$('#editModal').modal();
+	function viewModal(productNumber) {
+		$('#viewModal').modal();
 		$.ajax({
 			type : "GET",
 			url : "getProduct?productNumber="+productNumber,
 			dataType : 'json',
 			success : function(data) {
 				$('#product_number').val(data.productNumber);
-				let date = new Date(data.date.year, data.date.monthValue-1, data.date.dayOfMonth);
+				let date = new Date(data.date.year, data.date.monthValue-1, data.date.dayOfMonth+1);
 				$('#product_date').val(date.toISOString().slice(0, 10));
+				var tableBodyHtml = "";
+				if (data.productDetail.length == 0) {
+					tableBodyHtml += "<tr><td colspan='6' style='text-align: center;'>No Records Found</td></tr>";
+				}
+				var totalSum = 0.0;
+				$.each(data.productDetail, function(index, item) {
+					var isLastElement = index == data.productDetail.length -1;
+					index += 1;
+					tableBodyHtml += "<tr>"
+							+ '<td>' + index + '</td>'
+							+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
+							+ '<td>' + item.width + '</td>'
+							+ '<td>' + item.height + '</td>'
+							+ '<td>' + item.finalPrice + '</td>'
+							+ '<td>' + (item.finalPrice * item.width) + '</td>'
+							+ '</tr>';
+					totalSum += (item.finalPrice * item.width);
+							
+					if(isLastElement){
+						tableBodyHtml += "<tr>"
+						+ '<td></td>'
+						+ '<td></td>'
+						+ '<td></td>'
+						+ '<td></td>'
+						+ '<td>Total</td>'
+						+ '<td>'+ totalSum +'</td>'
+						+ "<tr>";
+					}
+				});
+				$('#quickViewProductDetailTableBody').html(tableBodyHtml);
+				
 			},
 			error : function(jgXHR) {
 				alert(jgXHR.responseText);
@@ -247,7 +305,21 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		
 	}
 
-	function editData(id) {
+	function renderMainTable(){
+		$.ajax({
+			type : "GET",
+			url : "productList",
+			dataType : 'json',
+			success : function(data) {
+				renderTable(data);
+			},
+			error : function(jgXHR) {
+				alert(jgXHR.responseText);
+			},
+		});
+	}
+
+	function viewData(id) {
 		// do your stuffs with id
 		$("#successMessage").html(
 				"Record With id " + id + " Deleted successfully!");
@@ -260,9 +332,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 			tableBodyHtml += "<tr><td colspan='6' style='text-align: center;'>No Records Found</td></tr>";
 		}
 		$.each(data, function() {
-			tableBodyHtml += "<tr><td>"
-					+ this.productNumber
-					+ "</td>"
+			tableBodyHtml += '<tr>'
+					+ '<td><a href="productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
 					+ '<td>'
 					+ this.date.month
 					+ '</td>'
@@ -270,24 +341,18 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 					+ "No total price first"
 					+ '</td>'
 					+ '<td>'
-					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="confirmEditModal('+this.productNumber+')">Edit</button>'
+					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>'
 					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal(112)">Delete</button>'
 					+ '</td>' + '</tr>';
 		});
 		$('#productTableBody').html(tableBodyHtml);
 	}
 
-	$.ajax({
-		type : "GET",
-		url : "productList",
-		dataType : 'json',
-		success : function(data) {
-			renderTable(data);
-		},
-		error : function(jgXHR) {
-			alert(jgXHR.responseText);
-		},
-	});
+	function createProductModal(){
+		$('#createProductNumber').val("");
+		$('#createProductDate').val(new Date().toISOString().substring(0, 10));
+		$('#createProductModel').modal();
+	}
 </script>
 </head>
 <body>
@@ -299,8 +364,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 
 	<div class="content-section" style="z-index: 1">
 		<main class='container' role='main'>
-			<h2 class="container"></h2>
-			<div class='container' style="margin-top: 60px">
+			<h2></h2>
+			<div>
 				<h2>Product list</h2>
 				<div class='row'>
 					<div class='col-xs-12'>
@@ -312,7 +377,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							<div class='tab-content'>
 								<div class='tab-pane active' id='search' role='tabpanel'>
 									<button class="btn btn-primary" type="button"
-										onclick="window.location.href='EmployeeProductDetailsServlet?createProduct=CREATEPRODUCT'"
+										onclick=createProductModal()
 										style="display: inline-block; margin-top: 10px; background-color: transparent; color: #428bca; border: 1px solid #ddd;">
 										Add a new product</button>
 								</div>
@@ -381,18 +446,12 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		</div>
 	</div>
 
-	<div class="container">
-		<button type="button" class="btn btn-danger" data-toggle="modal"
-			data-target="#form">See Modal with Form</button>
-	</div>
-
-
-	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+	<div class="modal fade" id="viewModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header border-bottom-0">
-					<h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+					<h5 class="modal-title" id="exampleModalLabel">View Product</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -409,7 +468,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="email1">Date</label>
 							<div class="col-sm-9">
-								<input type="date" class="form-control" id="product_date" name="product_date">
+								<input type="date" class="form-control" id="product_date" name="product_date" readonly>
 							</div>
 						</div>
 					</div>
@@ -421,18 +480,54 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 										<table id="table" class='table table-striped table-hover'>
 											<thead>
 												<tr>
-													<th>Line Number</th>
-													<th>Product Code</th>
-													<th>Quantity Ordered</th>
-													<th>Price per each</th>
-													<th>Sum</th>
+													<th>Line number</th>
+													<th>Type</th>
+													<th>Width</th>
+													<th>Height</th>
+													<th>Price per service</th>
+													<th>Total price</th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody id="quickViewProductDetailTableBody">
 											</tbody>
 										</table>
 									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div
+						class="modal-footer border-top-0 d-flex justify-content-center">
+						<button type="submit" class="btn btn-success">Submit</button>
+					</div> -->
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="createProductModel" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header border-bottom-0">
+					<h3 class="modal-title" id="exampleModalLabel">Create Product</h3>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form id="createProductForm">
+					<div class="modal-body">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label" for="email1">Product Number</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="createProductNumber" name="createProductNumber" value="" required>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label" for="email1">Date</label>
+							<div class="col-sm-9">
+								<input type="date" class="form-control" id="createProductDate" name="createProductDate" value="" required>
 							</div>
 						</div>
 					</div>
