@@ -27,13 +27,13 @@ CREATE TABLE `installation_type` (
   `diff_price` tinyint(1) NOT NULL DEFAULT 0,
   `price` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `installation_type` */
 
 insert  into `installation_type`(`id`,`desc_english`,`desc_chinese`,`diff_price`,`price`) values 
 (1,'wall unit','上座柜',1,20),
-(2,'base unit','下座柜',0,20),
+(2,'base unit','下座柜',0,78),
 (3,'concrete top b/unit','石犀桌',0,20),
 (4,'tv cabinet & dressing table','电视机和梳妆桌',0,20),
 (5,'wardrobe(swing/sliding)','壁柜(开门/汤门)',0,20),
@@ -43,11 +43,11 @@ insert  into `installation_type`(`id`,`desc_english`,`desc_chinese`,`diff_price`
 (9,'ep (small)','小 ep',0,20),
 (10,'canopy','飞板',0,20),
 (11,'modify cabinet per unit',NULL,0,20),
-(12,'drawer (normal)','柜桐(普通)',0,20),
+(12,'drawer (normal)','柜桐(普通)',0,80),
 (13,'drawer (dwd)','柜桐(dwd)',0,20),
 (14,'pull out basket','拉篮(normal)',0,20),
 (15,'lock','柜桐锁头',0,20),
-(16,'sink opening sink','盘开洞',0,20),
+(16,'sink opening sink','盘开洞',0,60),
 (17,'hob opening','煮食炉开洞',0,20),
 (18,'install hood (slim)','安装平面油烟机',0,20),
 (19,'install hood (chimney)','安装白钢油烟机',0,20),
@@ -62,7 +62,8 @@ insert  into `installation_type`(`id`,`desc_english`,`desc_chinese`,`diff_price`
 (28,'gas spring',NULL,0,20),
 (29,'arm c',NULL,0,20),
 (30,'150mm pull out basket',NULL,0,20),
-(31,'computer, cooker hood hole',NULL,0,20);
+(31,'computer, cooker hood hole',NULL,0,20),
+(32,'others',NULL,0,NULL);
 
 /*Table structure for table `installation_type_diff_fees` */
 
@@ -111,9 +112,11 @@ CREATE TABLE `product` (
 /*Data for the table `product` */
 
 insert  into `product`(`product_number`,`date`) values 
-('10001','2022-03-04'),
-('10002','2022-03-24'),
-('10003','2022-03-24');
+('10001','2021-04-20'),
+('10002','2022-03-30'),
+('10003','2022-03-24'),
+('10004','2022-03-26'),
+('10005','2022-03-26');
 
 /*Table structure for table `product_details` */
 
@@ -125,6 +128,7 @@ CREATE TABLE `product_details` (
   `type` bigint(20) DEFAULT NULL,
   `width` double DEFAULT NULL,
   `height` double DEFAULT NULL,
+  `final_price` double DEFAULT NULL,
   PRIMARY KEY (`product_number`,`product_line_number`),
   KEY `type` (`type`),
   CONSTRAINT `product_details_ibfk_1` FOREIGN KEY (`type`) REFERENCES `installation_type` (`id`),
@@ -133,16 +137,14 @@ CREATE TABLE `product_details` (
 
 /*Data for the table `product_details` */
 
-insert  into `product_details`(`product_number`,`product_line_number`,`type`,`width`,`height`) values 
-('10001',1,1,1200,1200),
-('10001',2,1,1000,1300),
-('10001',3,1,1000,700),
-('10001',4,7,1000,800),
-('10001',5,1,1000,900),
-('10001',6,1,1000,1600),
-('10002',1,2,1000,600),
-('10002',2,2,1000,300),
-('10002',3,2,1000,400);
+insert  into `product_details`(`product_number`,`product_line_number`,`type`,`width`,`height`,`final_price`) values 
+('10001',2,1,1000,1350,32),
+('10001',3,5,1000,700,40),
+('10001',6,1,1000,1600,20),
+('10001',7,7,123,123,20),
+('10001',8,3,100,122,20),
+('10002',1,2,100,600,20),
+('10002',2,15,100,300,20);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
