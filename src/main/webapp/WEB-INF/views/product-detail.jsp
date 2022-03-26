@@ -284,20 +284,22 @@ function rendertable(){
 						+ '<td>' + index + '</td>'
 						+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
 						+ '<td>' + item.width + '</td>'
+						+ '<td>' + Math.round(((item.width)/304.8) * 10) / 10  + '</td>'
 						+ '<td>' + item.height + '</td>'
 						+ '<td>' + item.finalPrice + '</td>'
-						+ '<td>' + (item.finalPrice * item.width) + '</td>'
+						+ '<td>' + (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10) + '</td>'
 						+ '<td>'
 						+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="editProductDetail('+this.productNumber+','+ this.productLineNumber+','+index+')">Edit</button>'
 						+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+','+this.productLineNumber+')">Delete</button>'
 						+ '</td>'
 						+ '</tr>';
-				totalSum += (item.finalPrice * item.width);
+				totalSum += (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
 						
 				if(isLastElement){
 					$('#createLineNumber').val(this.productLineNumber + 1);
 					$('#createLineNumberShow').val(index+1);
 					tableBodyHtml += "<tr>"
+					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
@@ -382,7 +384,7 @@ function deleteData(productNumber, lineNumber) {
 	<main class='container' role='main'>
 		<div class='container'>
 			<div>
-				<a class="btn btn-info" style="margin-top: 10px" type="button" href="product.html">Back</a>
+				<a class="btn btn-info" style="margin-top: 10px" type="button" href="${pageContext.request.contextPath}">Back</a>
 				<h2>Product Details</h2>
 			</div>
 			<div class='row'>
@@ -426,6 +428,7 @@ function deleteData(productNumber, lineNumber) {
 																<th>Line number</th>
 																<th>Type</th>
 																<th>Width</th>
+																<th>FT</th>
 																<th>Height</th>
 																<th>Price per service</th>
 																<th>Total price</th>
@@ -513,19 +516,19 @@ function deleteData(productNumber, lineNumber) {
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="width">Width</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="width" name="width" value="" min="1" step="1" required>
+								<input type="number" class="form-control" id="width" name="width" value="" min="1" step="0.01" required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="height">Height</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="height" name="height" value="" min="1" step="1" required>
+								<input type="number" class="form-control" id="height" name="height" value="" min="1" step="0.01" required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="price">Price per service</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="price" name="price" value="" min="1" step="1" required>
+								<input type="number" class="form-control" id="price" name="price" value="" min="1" step="0.01" required>
 							</div>
 						</div>
 						

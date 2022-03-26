@@ -183,6 +183,12 @@ public class ProductDAO {
 	    return template.update(qry);    
 	}
 	
+	public int deleteProduct(String productNumber){    
+	    String qry = "DELETE FROM `product` "
+	    		+ "WHERE product_number = '" + productNumber + "'";
+	    return template.update(qry);    
+	}
+	
 	public int createProductDetail(String productNumber, int lineNumber, int type, double width, double height, double price){    
 	    String qry = "INSERT INTO `product_details` VALUE ('"+productNumber+"',"+lineNumber+","+type+", "+width+", "+height+", "+ price +")";
 	    return template.update(qry);    

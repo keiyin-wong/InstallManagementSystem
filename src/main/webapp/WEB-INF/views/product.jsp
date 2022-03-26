@@ -210,7 +210,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 			spinner.show();
 			$.ajax({
 				type: "POST",
-				url: "createProduct",
+				url: "${pageContext.request.contextPath}/product/createProduct",
 				cache : false,
 				data: parameter,
 				success: function(data){
@@ -243,24 +243,36 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 
 		}
 	}
-	function confirmDeleteModal(id) {
+	function confirmDeleteModal(productNumber) {
 		$('#deleteModal').modal();
 		$('#deleteButton').html(
-				'<a class="btn btn-danger" onclick="deleteData(' + id
-						+ ')">Delete</a>');
+				'<a class="btn btn-danger" onclick="deleteData(' + productNumber + ')">Delete</a>');
 	}
-	function deleteData(id) {
+	function deleteData(productNumber) {
 		// do your stuffs with id
-		$("#successMessage").html(
-				"Record With id " + id + " Deleted successfully!");
-		$('#deleteModal').modal('hide'); // now close modal
+		var spinner = $('#loader');
+		spinner.show();
+		$.ajax({
+			type : "GET",
+			url : "${pageContext.request.contextPath}/product/deleteProduct?productNumber="+productNumber,
+			success : function(data) {
+				renderMainTable();
+			},
+			error : function(jgXHR) {
+				spinner.hide();
+				alert(jgXHR.responseText);
+			}
+		}).done(function(){
+			spinner.hide();
+			$('#deleteModal').modal('hide'); // now close modal
+		});
 	}
 
 	function viewModal(productNumber) {
 		$('#viewModal').modal();
 		$.ajax({
 			type : "GET",
-			url : "getProduct?productNumber="+productNumber,
+			url : "${pageContext.request.contextPath}/product/getProduct?productNumber="+productNumber,
 			dataType : 'json',
 			success : function(data) {
 				$('#product_number').val(data.productNumber);
@@ -278,14 +290,16 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							+ '<td>' + index + '</td>'
 							+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
 							+ '<td>' + item.width + '</td>'
+							+ '<td>' + Math.round(((item.width)/304.8) * 10) / 10  + '</td>'
 							+ '<td>' + item.height + '</td>'
 							+ '<td>' + item.finalPrice + '</td>'
-							+ '<td>' + (item.finalPrice * item.width) + '</td>'
+							+ '<td>' + (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10) + '</td>'
 							+ '</tr>';
-					totalSum += (item.finalPrice * item.width);
+							totalSum += (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
 							
 					if(isLastElement){
 						tableBodyHtml += "<tr>"
+						+ '<td></td>'
 						+ '<td></td>'
 						+ '<td></td>'
 						+ '<td></td>'
@@ -308,7 +322,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 	function renderMainTable(){
 		$.ajax({
 			type : "GET",
-			url : "productList",
+			url : "${pageContext.request.contextPath}/product/productList",
 			dataType : 'json',
 			success : function(data) {
 				renderTable(data);
@@ -333,7 +347,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		}
 		$.each(data, function() {
 			tableBodyHtml += '<tr>'
-					+ '<td><a href="productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
+					+ '<td><a href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
 					+ '<td>'
 					+ this.date.month
 					+ '</td>'
@@ -342,7 +356,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 					+ '</td>'
 					+ '<td>'
 					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>'
-					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal(112)">Delete</button>'
+					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+')">Delete</button>'
 					+ '</td>' + '</tr>';
 		});
 		$('#productTableBody').html(tableBodyHtml);
@@ -483,6 +497,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 													<th>Line number</th>
 													<th>Type</th>
 													<th>Width</th>
+													<th>FT</th>
 													<th>Height</th>
 													<th>Price per service</th>
 													<th>Total price</th>

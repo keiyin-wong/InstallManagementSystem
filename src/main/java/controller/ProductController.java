@@ -174,11 +174,26 @@ public class ProductController {
 		else
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR); 
 		
-		System.out.println("Getting install type list");
+		System.out.println("Updating product");
 		try {
 			return new ResponseEntity<>(productDAO.updateProduct(productNumber, productDate), HttpStatus.OK);
 		}catch(Exception e){
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/deleteProduct", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<?> deleteProduct(@RequestParam String productNumber) {
+		System.out.println("Deleting product");
+		
+		try {
+			return new ResponseEntity<>(productDAO.deleteProduct(productNumber), HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			System.out.println(e);
+			return new ResponseEntity<>("Item not found",HttpStatus.NOT_FOUND);
+		}catch(Exception e) {
+			System.out.println(e);
+			return new ResponseEntity<>("Server Error",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
