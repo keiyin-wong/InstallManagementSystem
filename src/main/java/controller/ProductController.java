@@ -1,7 +1,8 @@
 package controller;
  
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,7 +50,24 @@ public class ProductController {
 	@RequestMapping(value = "/productList", method = RequestMethod.GET)
 	public @ResponseBody List<Product> getPriceDetails() {
 		System.out.println("Getting price");
-		return productDAO.getProductList();
+		return productDAO.getProductList(1, 1000);
+	}
+	
+	@RequestMapping(value = "/productListPag", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<?> productListPag(@RequestParam(required=false, defaultValue = "1")int currentPage, 
+			@RequestParam(required=false, defaultValue = "10")int currentLimit) {
+		System.out.println("Getting product list with pagination");
+		int start = (currentPage -1 )  * currentLimit;
+		List<Product> productList = productDAO.getProductList(start, currentLimit);
+		
+		Map<String, Object> parameterMap = new HashMap<>();
+		parameterMap.put("totalResult",  productDAO.getProductTotalCount());
+		parameterMap.put("currentPage", currentPage);
+		parameterMap.put("currentLimit", currentLimit);
+		parameterMap.put("currentSize", productList ==null? 0 :productList.size());
+		parameterMap.put("result", productList);
+		
+		return new ResponseEntity<>(parameterMap, HttpStatus.OK); 
 	}
 	
 	@RequestMapping(value = "/getProduct", method = RequestMethod.GET)
@@ -211,6 +229,16 @@ public class ProductController {
 		}catch(Exception e){
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@RequestMapping(value="/generateProductDetailReport.do")
+	public ModelAndView generateProductDetailReport(@RequestParam String productNumber, HttpServletRequest request) {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("view", "productDetailReport");
+		model.put("format", "pdf");
+		model.put("productNumber", productNumber);
+		
+		return new ModelAndView("productDetailReport", model);
 	}
 	
 	

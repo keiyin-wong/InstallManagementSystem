@@ -2,6 +2,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" 
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -37,6 +38,9 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 		</property>
 	</bean>
 	
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver"
+		p:location="/WEB-INF/jasper-views.xml"  p:order="0" />
+	
 	<bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">    
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>    
 		<property name="url" value="jdbc:mysql://localhost:3306/installation"></property>    
@@ -49,7 +53,12 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	</bean>
 	
 	<bean id="dao" class="dao.ProductDAO">    
-		<property name="template" ref="jt"></property>    
+		<property name="template" ref="jt"></property> 
 	</bean>  
 	
+	<import resource="jasper-views.xml" />
+	
+<!-- 	<bean id="myclasspath" class="java.lang.String">
+	  <constructor-arg value="classpath:"/>
+	</bean> -->
 </beans>

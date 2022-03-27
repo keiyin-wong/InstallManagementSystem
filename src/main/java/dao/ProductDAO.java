@@ -2,9 +2,6 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
@@ -26,7 +23,16 @@ public class ProductDAO {
 		String qry = "SELECT price FROM `installation_type_diff_fees` "
 				+ "WHERE size = TRUNCATE(" + height + ", -2) AND `type` = " + type;
 		
-		return (Double) template.queryForObject(qry, Double.class);
+		//return (Double) template.queryForObject(qry, Double.class);
+		
+		return template.queryForObject(qry, new RowMapper<Double>() {
+			@Override
+			public Double mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				return Double.valueOf(rs.getDouble(1));
+			}
+			
+		});
 	}
 	
 	public Product getProduct(String productNum) {
@@ -132,9 +138,43 @@ public class ProductDAO {
 	    });
 	}
 	
+//	public List<ProductDetail> getProductDetailListLimit(String productNumber, int start, int limit ){
+//		String qry = "SELECT * "
+//				+ "FROM `product` p "
+//				+ "JOIN `product_details` pd ON p.product_number = pd.product_number "
+//				+ "JOIN `installation_type` it ON pd.type = it.id "
+//				+ "WHERE p.product_number = '" + productNumber + "' "
+//				+ "ORDER BY pd.product_line_number ASC "
+//				+ "LIMIT " + start + ", " + limit;
+//		
+//		return template.query(qry,new RowMapper<ProductDetail>(){    
+//	        public ProductDetail mapRow(ResultSet rs, int row) throws SQLException {
+//	        	ProductDetail pd= new ProductDetail();
+//	        	InstallType it = new InstallType();
+//	        	pd.setProductNumber(rs.getString("product_number"));
+//	        	pd.setProductLineNumber(rs.getInt("product_line_number"));
+//	        	pd.setHeight(rs.getDouble("height"));
+//	            pd.setWidth(rs.getDouble("width"));
+//	            pd.setFinalPrice((rs.getDouble("final_price")));
+//	            
+//	            it.setId(rs.getInt("type"));
+//	            it.setDesc_eng(rs.getString("desc_english"));
+//	            it.setDesc_chinese(rs.getString("desc_chinese"));
+//	            it.setDiff_price(rs.getBoolean("diff_price"));
+//	            it.setPrice(rs.getDouble("price"));
+//	            pd.setType(it);
+//   
+//	            return pd;    
+//	        }    
+//	    });
+//	}
 	
-	public List<Product> getProductList(){
-		String qry = "SELECT * FROM product";
+	
+	public List<Product> getProductList(int start, int limit){
+		String qry = "SELECT * "
+				+ "FROM `product` p "
+				+ "ORDER BY p.product_number DESC "
+				+ "LIMIT " + start + ", " + limit;
 	    return template.query(qry,new RowMapper<Product>(){    
 	        public Product mapRow(ResultSet rs, int row) throws SQLException {    
 	        	Product p= new Product();
@@ -147,6 +187,20 @@ public class ProductDAO {
 	        }    
 	    });    
 	}
+	
+	public Integer getProductTotalCount() {
+		String qry = "SELECT COUNT(*) AS size FROM product";	
+		
+		return template.queryForObject(qry, new RowMapper<Integer>() {
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				return Integer.valueOf(rs.getInt(1));
+			}
+			
+		});
+	}
+	
 	
 	public List<InstallType> getInstallTypeList(){
 		String qry = "SELECT * FROM `installation_type`";

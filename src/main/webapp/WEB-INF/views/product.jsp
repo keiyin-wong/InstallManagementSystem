@@ -50,159 +50,34 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 
 
 <style>
-.delete:hover {
-	background-color: #713031;
+.pagination ul > .active {
+	background-color: #f5f5f5;
+}
+.pagination ul > li {
+    display: inline;
+    float: left;
+    padding: 4px 12px;
+    line-height: 20px;
+    text-decoration: none;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+}
+.pagination ul > li:hover{
+	background-color: #f5f5f5;
 }
 
-.delete.selected {
-	background-color: #713031;
+.pagination ul > li > a{
+ 	display: block;
+  	width: 100%;
 }
 
-.delete.selected .deleteBox {
-	opacity: 1;
-	-ms-filter:
-		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
-	filter: alpha(opacity = 100);
-	top: -110px;
-	width: 275px;
-	height: 100px;
-	overflow: visible;
-	-webkit-transition: opacity 0.3s, top 0.3s, width 0s, height 0s;
-	-webkit-transition-delay: 0s, 0s, 0s, 0s;
-	-moz-transition: opacity 0.3s, top 0.3s, width 0s 0s, height 0s 0s;
-	-o-transition: opacity 0.3s, top 0.3s, width 0s 0s, height 0s 0s;
-	transition: opacity 0.3s, top 0.3s, width 0s 0s, height 0s 0s;
-	z-index: 2;
-	position: absolute;
-	top: -110px;
-}
 
-.delete .deleteBox {
-	position: absolute;
-	top: -90px;
-	left: 50%;
-	margin-left: -137px;
-	overflow: hidden;
-	background: #1C242B;
-	width: 0px;
-	height: 0px;
-	border-radius: 5px;
-	text-indent: 0px;
-	cursor: default;
-	opacity: 0;
-	-ms-filter:
-		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
-	filter: alpha(opacity = 0);
-	-webkit-transition: opacity 0.3s, top 0.3s, width 0s, height 0s;
-	-webkit-transition-delay: 0s, 0s, 0.3s, 0.3s;
-	-moz-transition: opacity 0.3s, top 0.3s, width 0s 0.3s, height 0s 0.3s;
-	-o-transition: opacity 0.3s, top 0.3s, width 0s 0.3s, height 0s 0.3s;
-	transition: opacity 0.3s, top 0.3s, width 0s 0.3s, height 0s 0.3s;
-	z-index: -1;
-}
-
-.delete .deleteBox:after {
-	content: '';
-	display: block;
-	width: 0px;
-	left: 0px;
-	border-top: 5px solid #1C242B;
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	position: absolute;
-	bottom: -5px;
-	left: 50%;
-	margin-left: -5px;
-}
-
-.delete .deleteBox p {
-	margin: 10px 0 3px;
-}
-
-.delete .deleteBox span {
-	display: -moz-inline-stack;
-	display: inline-block;
-	vertical-align: middle;
-	*vertical-align: auto;
-	zoom: 1;
-	*display: inline;
-	margin: 0 10px;
-	color: #FFF;
-	border-radius: 3px;
-	width: 80px;
-	height: 25px;
-	line-height: 25px;
-	cursor: pointer;
-	-webkit-transition: background 0.3s;
-	-moz-transition: background 0.3s;
-	-o-transition: background 0.3s;
-	transition: background 0.3s;
-}
-
-.delete .deleteBox span.confirm {
-	background: #38B87C;
-}
-
-.delete .deleteBox span.confirm:hover {
-	background: #2c9162;
-}
-
-.delete .deleteBox span.cancel {
-	background: #696F73;
-}
-
-.delete .deleteBox span.cancel:hover {
-	background: #515558;
-}
-
-.delete .deleteBox:before {
-	content: 'Deleting...';
-	display: block;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 0px;
-	height: 0px;
-	text-align: center;
-	line-height: 60px;
-	opacity: 0;
-	-ms-filter:
-		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
-	filter: alpha(opacity = 0);
-	border-radius: 5px;
-	background: #1c242b
-		url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSJ3aGl0ZSI+CiAgPGNpcmNsZSB0cmFuc2Zvcm09InRyYW5zbGF0ZSg4IDApIiBjeD0iMCIgY3k9IjE2IiByPSIwIj4gCiAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJyIiB2YWx1ZXM9IjA7IDQ7IDA7IDAiIGR1cj0iMS4ycyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiIGJlZ2luPSIwIgogICAgICBrZXl0aW1lcz0iMDswLjI7MC43OzEiIGtleVNwbGluZXM9IjAuMiAwLjIgMC40IDAuODswLjIgMC42IDAuNCAwLjg7MC4yIDAuNiAwLjQgMC44IiBjYWxjTW9kZT0ic3BsaW5lIiAvPgogIDwvY2lyY2xlPgogIDxjaXJjbGUgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTYgMCkiIGN4PSIwIiBjeT0iMTYiIHI9IjAiPiAKICAgIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9InIiIHZhbHVlcz0iMDsgNDsgMDsgMCIgZHVyPSIxLjJzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgYmVnaW49IjAuMyIKICAgICAga2V5dGltZXM9IjA7MC4yOzAuNzsxIiBrZXlTcGxpbmVzPSIwLjIgMC4yIDAuNCAwLjg7MC4yIDAuNiAwLjQgMC44OzAuMiAwLjYgMC40IDAuOCIgY2FsY01vZGU9InNwbGluZSIgLz4KICA8L2NpcmNsZT4KICA8Y2lyY2xlIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0IDApIiBjeD0iMCIgY3k9IjE2IiByPSIwIj4gCiAgICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJyIiB2YWx1ZXM9IjA7IDQ7IDA7IDAiIGR1cj0iMS4ycyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiIGJlZ2luPSIwLjYiCiAgICAgIGtleXRpbWVzPSIwOzAuMjswLjc7MSIga2V5U3BsaW5lcz0iMC4yIDAuMiAwLjQgMC44OzAuMiAwLjYgMC40IDAuODswLjIgMC42IDAuNCAwLjgiIGNhbGNNb2RlPSJzcGxpbmUiIC8+CiAgPC9jaXJjbGU+Cjwvc3ZnPg==")
-		no-repeat center 50px;
-	-webkit-transition: opacity 0.3s, top 0.3s, left 0.3s;
-	-moz-transition: opacity 0.3s, top 0.3s, left 0.3s;
-	-o-transition: opacity 0.3s, top 0.3s, left 0.3s;
-	transition: opacity 0.3s, top 0.3s, left 0.3s;
-}
-
-.delete .deleteBox.loading:before {
-	opacity: 1;
-	-ms-filter:
-		"progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacityIE)";
-	filter: alpha(opacity = 100);
-	width: 100%;
-	height: 100%;
-	top: 0px;
-	left: 0px;
-}
-
-.delete .deleteBox.deleted:before {
-	content: attr(title);
-	background: #1c242b
-		url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoKCSB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4KCjxwb2x5Z29uIGlkPSJjaGVjay1tYXJrLTctaWNvbiIgcG9pbnRzPSI1MCwyNDcuNzg3IDc3LjA5LDIxOS44MzMgMjA5Ljg1OSwyOTkuMjIyIDQzOC43ODcsODEuMjQ1IDQ2MiwxMDQuNSAyMTkuODYzLDQzMC43NTUgIiBmaWxsPSIjRkZGIi8+Cgo8L3N2Zz4=")
-		no-repeat center 55px;
-	background-size: 20px 20px;
-}
 </style>
 
 <script>
+var storedCurrentpage = 1;
 	$(document).ready(function(){
-		renderMainTable();
-
+		displayPage(storedCurrentpage);
 		$("#createProductForm").submit(function( event ) {
 			event.preventDefault();
 			var parameter = $('#createProductForm').serialize();
@@ -215,7 +90,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 				data: parameter,
 				success: function(data){
 					spinner.hide();
-					renderMainTable();
+					displayPage(storedCurrentpage);
 					$('#createProductModel').modal('hide');
 				},
 				error : function(jgXHR){
@@ -256,7 +131,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 			type : "GET",
 			url : "${pageContext.request.contextPath}/product/deleteProduct?productNumber="+productNumber,
 			success : function(data) {
-				renderMainTable();
+				displayPage(storedCurrentpage);
 			},
 			error : function(jgXHR) {
 				spinner.hide();
@@ -319,13 +194,16 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		
 	}
 
-	function renderMainTable(){
+	function displayPage(currentPage){
+		storedCurrentpage = currentPage;
 		$.ajax({
 			type : "GET",
-			url : "${pageContext.request.contextPath}/product/productList",
+			url : "${pageContext.request.contextPath}/product/productListPag?currentPage="+storedCurrentpage+"&currentLimit=10",
 			dataType : 'json',
 			success : function(data) {
-				renderTable(data);
+				var productList = data.result;
+				renderTable(productList);
+				displayLinks(data);
 			},
 			error : function(jgXHR) {
 				alert(jgXHR.responseText);
@@ -357,6 +235,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 					+ '<td>'
 					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>'
 					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+')">Delete</button>'
+					+ '<a class="btn btn-info btn-sm" type="button" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?productNumber='+this.productNumber+'">Print</a>'
 					+ '</td>' + '</tr>';
 		});
 		$('#productTableBody').html(tableBodyHtml);
@@ -367,6 +246,77 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		$('#createProductDate').val(new Date().toISOString().substring(0, 10));
 		$('#createProductModel').modal();
 	}
+	
+	function displayLinks(data, element) {
+		var targetElement = '';
+		//default target element if no element is given.
+		if(element == null){
+			targetElement = '.pagination ul';
+		}else{
+			targetElement = element;
+		}
+		
+		var totalResult = parseInt(data.totalResult);
+		var limit = parseInt(data.currentLimit);
+		var totalPage = parseInt(totalResult / limit);
+		var balance = totalResult % limit;
+		var currentPage = parseInt(data.currentPage);
+		storedCurrentpage = currentPage;
+		
+		totalPage = (balance != 0)  ? totalPage + 1 : totalPage;
+
+		var different = 5;
+		var firstLink = parseInt(parseInt(currentPage) - different);
+		var lastLink = parseInt(parseInt(currentPage) + different);
+
+		lastLink = (currentPage < different) ? lastLink + (different - parseInt(currentPage)) : lastLink;
+		
+		firstLink = (currentPage > (totalPage - different)) ? currentPage - parseInt(((different * 2) - (totalPage - currentPage))) : firstLink; 
+		firstLink = (firstLink < 1) ? 1 : firstLink;
+		lastLink = (lastLink > totalPage) ? totalPage : lastLink; 
+		var nextPage = currentPage + 1;
+		var previousPage = currentPage - 1;
+		nextPage = (nextPage >= lastLink) ? lastLink : nextPage;
+		previousPage = (previousPage <= 1) ? 1 : previousPage;
+		
+		var paginationHtml = "";
+		
+		if(currentPage > 1){
+			paginationHtml += "<li><a href=\"javascript:displayPage("+previousPage+")\">&larr;</a></li>";
+		}else{
+			paginationHtml += '<li class="disabled"><a>&larr;</a></li>';
+		}
+		var debugVariable = ('total result: '+totalResult+'\nlimit: '+limit+'\ntotal page: '
+				+totalPage+'\nremainder: '+balance+'\ncurrent page: '+currentPage+'\nfirst link: '
+				+firstLink+'\nlast link: '+lastLink+'\nnext page: '+nextPage+'\nprevious page:'
+				+previousPage+'\Generated html: '+paginationHtml);	
+		//alert(debugVariable);
+		for ( var i = firstLink; i <= lastLink; i++) {		
+			var paginationLink = '';
+			if (currentPage == i) {
+				paginationHtml += "<li class=\"active\"><a>"+i+"</a>";
+			} else {
+				paginationHtml += "<li>";
+				paginationLink = "<a href=\"javascript:displayPage(" +i+ ")\">" + i + "</a>";
+			}
+			paginationHtml += paginationLink;
+			paginationHtml += "</li>";
+		}
+		if(currentPage < lastLink){
+			paginationHtml += "<li><a href=\"javascript:displayPage("+nextPage+")\">&rarr;</a></li>";
+		}else{
+			paginationHtml += '<li class="disabled"><a>&rarr;</a></li>';
+		}
+		if(totalPage > 1){
+			$(targetElement).html(paginationHtml);
+			$(targetElement).show();
+		}else{
+			$(targetElement).html("");
+			$(targetElement).hide();
+		}		
+
+	}
+
 </script>
 </head>
 <body>
@@ -380,20 +330,20 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		<main class='container' role='main'>
 			<h2></h2>
 			<div>
-				<h2>Product list</h2>
+				<h2>Order list</h2>
 				<div class='row'>
 					<div class='col-xs-12'>
 						<div class='orders-filter-container' role='tabpanel'>
 							<ul class='nav nav-tabs' role='tablist'>
 								<li class='active' role='presentation'><a href='#'
-									role='tab'> Products </a></li>
+									role='tab'> Orders </a></li>
 							</ul>
 							<div class='tab-content'>
 								<div class='tab-pane active' id='search' role='tabpanel'>
 									<button class="btn btn-primary" type="button"
 										onclick=createProductModal()
 										style="display: inline-block; margin-top: 10px; background-color: transparent; color: #428bca; border: 1px solid #ddd;">
-										Add a new product</button>
+										Add a new order</button>
 								</div>
 								<div class='tab-pane active' id='filter' role='tabpanel'>
 									<div class='row'></div>
@@ -409,7 +359,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							<table class='table table-striped table-hover'>
 								<thead>
 									<tr>
-										<th>Product Number</th>
+										<th>Order Number</th>
 										<th>Date</th>
 										<th>Total Price</th>
 										<th>Action</th>
@@ -431,6 +381,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							</table>
 						</div>
 					</div>
+					<div class='col-xs-12 pagination'><ul></ul></div>
 				</div>
 
 			</div>
@@ -465,7 +416,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header border-bottom-0">
-					<h5 class="modal-title" id="exampleModalLabel">View Product</h5>
+					<h5 class="modal-title" id="exampleModalLabel">View Order</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -474,7 +425,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 				<form>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-sm-3 col-form-label" for="email1">Product Number</label>
+							<label class="col-sm-3 col-form-label" for="email1">Order Number</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="product_number" name="product_number" value=10001 readonly>
 							</div>
@@ -485,8 +436,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 								<input type="date" class="form-control" id="product_date" name="product_date" readonly>
 							</div>
 						</div>
-					</div>
-					<div class='row attribute-row' style="margin-bottom: 10px;">
+						<div class='row attribute-row' style="margin-bottom: 10px;">
 						<div class='col-xs-12' title='Order Details:'>
 							<div style="display: inline-block;" class='value'>
 								<div class='col-xs-12'>
@@ -511,6 +461,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							</div>
 						</div>
 					</div>
+				</div>
+					
 					<!-- <div
 						class="modal-footer border-top-0 d-flex justify-content-center">
 						<button type="submit" class="btn btn-success">Submit</button>
@@ -525,7 +477,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header border-bottom-0">
-					<h3 class="modal-title" id="exampleModalLabel">Create Product</h3>
+					<h3 class="modal-title" id="exampleModalLabel">Create Order</h3>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -534,7 +486,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 				<form id="createProductForm">
 					<div class="modal-body">
 						<div class="form-group row">
-							<label class="col-sm-3 col-form-label" for="email1">Product Number</label>
+							<label class="col-sm-3 col-form-label" for="email1">Order Number</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="createProductNumber" name="createProductNumber" value="" required>
 							</div>

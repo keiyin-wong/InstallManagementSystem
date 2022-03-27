@@ -385,80 +385,126 @@ function deleteData(productNumber, lineNumber) {
 		<div class='container'>
 			<div>
 				<a class="btn btn-info" style="margin-top: 10px" type="button" href="${pageContext.request.contextPath}">Back</a>
-				<h2>Product Details</h2>
+				<h2>Order Details</h2>
 			</div>
 			<div class='row'>
 				<div class='col-xs-12'>
 					<div id='hbw-bp-control-buttons-container'></div>
-					<form class="simple_form form-horizontal productForm "
-						id="productForm"
-						accept-charset="UTF-8" method="post">
-						<div class='row'>
-							<div class='col-xs-6'>
+					<div class='row'>
+						<div class='col-xs-6'>
+							<form class="simple_form form-horizontal productForm "
+								id="productForm" accept-charset="UTF-8" method="post">
 								<div class="form-group row string optional">
-									<label class="string optional col-sm-4 control-label">Product Number</label>
+									<label class="string optional col-sm-4 control-label">Order
+										Number</label>
 									<div class="col-sm-8">
-										<input value="" class="string optional form-control" type="text" name="productNumber" id="productNumber" readonly>
+										<input value="" class="string optional form-control"
+											type="text" name="productNumber" id="productNumber" readonly>
 									</div>
 								</div>
 								<div class="form-group row string optional">
 									<label class="string optional col-sm-4 control-label">Date</label>
 									<div class="col-sm-8">
-										<input value="" class="string optional form-control" type="date" name="productDate" id="productDate">
+										<input value="" class="string optional form-control"
+											type="date" name="productDate" id="productDate">
 									</div>
 								</div>
 								<div class="form-group row string optional">
 									<!-- <a class="btn btn-primary pull-right btn-sm" type="button" style="margin-left: 5px" href="product.html">Back</a> -->
-									<input type="submit" class="btn btn-primary pull-right btn-sm" value="Edit">
+									<input type="submit" class="btn btn-primary pull-right btn-sm"
+										value="Edit">
 								</div>
-							</div>
-							<div class='col-xs-12'>
-								<div class='row attribute-row' style="margin-bottom: 10px;">
-									<div class='col-xs-12' title='Order Details:'>
-										<div class='value'>
-											<div class='col-xs-12'>
-												<button class="btn btn-primary" onclick=createProductDetail()>Add service</button>
-												<div style="/* border-bottom: 1px solid #e5e5e5;  */padding-bottom:10px"></div>
-											</div>
-											<div class='col-xs-12'>
-												<div class='table-responsive orders-list'>
-													<table id="table" class='table table-striped table-hover'>
-														<thead>
-															<tr>
-																<th>Line number</th>
-																<th>Type</th>
-																<th>Width</th>
-																<th>FT</th>
-																<th>Height</th>
-																<th>Price per service</th>
-																<th>Total price</th>
-																<th>Actions</th>
-															</tr>
-														</thead>
-														<tbody id="ProductDetailTableBody">
-															<tr>
-																<td>1</td>
-																<th>Wall unit</th>
-																<th>1000</th>
-																<th>2000</th>
-																<th>30</th>
-																<th>30000</th>
-															</tr>
-														</tbody>
-													</table>
-												</div>
+							</form>
+						</div>
+						<div class='col-xs-6'>
+								<FORM NAME="Calc" onsubmit="return false;">
+									<TABLE BORDER=4>
+										<TR>
+											<TD><INPUT TYPE="text" NAME="Input" Size="16"
+												style="width: auto;"> <br></TD>
+										</TR>
+										<TR>
+											<TD><INPUT TYPE="button" NAME="one" VALUE="  1  "
+												OnClick="Calc.Input.value += '1'"> <INPUT
+												TYPE="button" NAME="two" VALUE="  2  "
+												OnCLick="Calc.Input.value += '2'"> <INPUT
+												TYPE="button" NAME="three" VALUE="  3  "
+												OnClick="Calc.Input.value += '3'"> <INPUT
+												TYPE="button" NAME="plus" VALUE="  +  "
+												OnClick="Calc.Input.value += ' + '"> <br> <INPUT
+												TYPE="button" NAME="four" VALUE="  4  "
+												OnClick="Calc.Input.value += '4'"> <INPUT
+												TYPE="button" NAME="five" VALUE="  5  "
+												OnCLick="Calc.Input.value += '5'"> <INPUT
+												TYPE="button" NAME="six" VALUE="  6  "
+												OnClick="Calc.Input.value += '6'"> <INPUT
+												TYPE="button" NAME="minus" VALUE="  -  "
+												OnClick="Calc.Input.value += ' - '"> <br> <INPUT
+												TYPE="button" NAME="seven" VALUE="  7  "
+												OnClick="Calc.Input.value += '7'"> <INPUT
+												TYPE="button" NAME="eight" VALUE="  8  "
+												OnCLick="Calc.Input.value += '8'"> <INPUT
+												TYPE="button" NAME="nine" VALUE="  9  "
+												OnClick="Calc.Input.value += '9'"> <INPUT
+												TYPE="button" NAME="times" VALUE="  x  "
+												OnClick="Calc.Input.value += ' * '"> <br> <INPUT
+												TYPE="button" NAME="clear" VALUE="  c  "
+												OnClick="Calc.Input.value = ''"> <INPUT
+												TYPE="button" NAME="zero" VALUE="  0  "
+												OnClick="Calc.Input.value += '0'"> <INPUT
+												TYPE="button" NAME="DoIt" VALUE="  =  "
+												OnClick="Calc.Input.value = eval(Calc.Input.value)">
+												<INPUT TYPE="button" NAME="div" VALUE="  /  "
+												OnClick="Calc.Input.value += ' / '"> <br></TD>
+										</TR>
+									</TABLE>
+								</FORM>
+						</div>
+						<div class='col-xs-12'>
+							<div class='row attribute-row' style="margin-bottom: 10px;">
+								<div class='col-xs-12' title='Order Details:'>
+									<div class='value'>
+										<div class='col-xs-12'>
+											<button class="btn btn-primary" onclick=createProductDetail()>Add
+												service</button>
+											<div style="padding-bottom: 10px"></div>
+										</div>
+										<div class='col-xs-12'>
+											<div class='table-responsive orders-list'>
+												<table id="table" class='table table-striped table-hover'>
+													<thead>
+														<tr>
+															<th>Line number</th>
+															<th>Type</th>
+															<th>Width</th>
+															<th>FT</th>
+															<th>Height</th>
+															<th>Price per service</th>
+															<th>Total price</th>
+															<th>Actions</th>
+														</tr>
+													</thead>
+													<tbody id="ProductDetailTableBody">
+														<tr>
+															<td>1</td>
+															<th>Wall unit</th>
+															<th>1000</th>
+															<th>2000</th>
+															<th>30</th>
+															<th>30000</th>
+														</tr>
+													</tbody>
+												</table>
 											</div>
 										</div>
 									</div>
 								</div>
-								
 							</div>
 						</div>
-					</form>
-
+					</div>
 				</div>
 			</div>
-			</div>
+		</div>
 	</main>
 	
 	<div id="deleteModal" class="modal fade" role='dialog'>
@@ -489,7 +535,7 @@ function deleteData(productNumber, lineNumber) {
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header border-bottom-0">
-					<h5 class="modal-title" id="exampleModalLabel">Product detail</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Order details</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -547,7 +593,7 @@ function deleteData(productNumber, lineNumber) {
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header border-bottom-0">
-					<h3 class="modal-title" id="exampleModalLabel">Create product details</h3>
+					<h3 class="modal-title" id="exampleModalLabel">Create order details</h3>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
