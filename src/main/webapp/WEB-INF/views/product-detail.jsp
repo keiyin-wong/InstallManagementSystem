@@ -13,7 +13,7 @@ Kool Store Template
 http://www.templatemo.com/preview/templatemo_428_kool_store
 -->
 <meta charset="utf-8">
-<title>Kool Store - Responsive eCommerce Template</title>
+<title>WAH SHOON ENTERPRISE</title>
 
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width">

@@ -10,12 +10,10 @@
 <!--<![endif]-->
 <head>
 <!-- 
-Kool Store Template
-http://www.templatemo.com/preview/templatemo_428_kool_store
 -->
 <meta charset="utf-8">
 
-<title>Kool Store - Responsive eCommerce Template</title>
+<title>WAH SHOON ENTERPRISE</title>
 
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width">
@@ -428,7 +426,7 @@ var storedCurrentpage = 1;
 					</button>
 				</div>
 				<form>
-					<div class="modal-body">
+					<div class="modal-body" style="overflow:auto;">
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="email1">Order Number</label>
 							<div class="col-sm-9">
@@ -438,7 +436,7 @@ var storedCurrentpage = 1;
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="email1">Date</label>
 							<div class="col-sm-9">
-								<input type="date" class="form-control" id="product_date" name="product_date" readonly>
+								<input type="date" class="form-control" id="product_date" name="product_date" style='width:60%;' readonly>
 							</div>
 						</div>
 						<div class='row attribute-row' style="margin-bottom: 10px;">
