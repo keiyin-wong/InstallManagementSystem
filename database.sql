@@ -1,6 +1,6 @@
 /*
-SQLyog Community v13.1.7 (64 bit)
-MySQL - 10.6.4-MariaDB : Database - installation
+SQLyog Community v13.1.9 (64 bit)
+MySQL - 10.7.3-MariaDB : Database - installation
 *********************************************************************
 */
 
@@ -33,7 +33,7 @@ CREATE TABLE `installation_type` (
 
 insert  into `installation_type`(`id`,`desc_english`,`desc_chinese`,`diff_price`,`price`) values 
 (1,'wall unit','上座柜',1,20),
-(2,'base unit','下座柜',0,78),
+(2,'base unit','下座柜',0,20),
 (3,'concrete top b/unit','石犀桌',0,20),
 (4,'tv cabinet & dressing table','电视机和梳妆桌',0,20),
 (5,'wardrobe(swing/sliding)','壁柜(开门/汤门)',0,20),
@@ -112,11 +112,8 @@ CREATE TABLE `product` (
 /*Data for the table `product` */
 
 insert  into `product`(`product_number`,`date`) values 
-('10001','2021-04-20'),
-('10002','2022-03-30'),
-('10003','2022-03-24'),
-('10004','2022-03-26'),
-('10005','2022-03-26');
+('10001','2022-03-29'),
+('12951','2022-03-29');
 
 /*Table structure for table `product_details` */
 
@@ -132,19 +129,32 @@ CREATE TABLE `product_details` (
   PRIMARY KEY (`product_number`,`product_line_number`),
   KEY `type` (`type`),
   CONSTRAINT `product_details_ibfk_1` FOREIGN KEY (`type`) REFERENCES `installation_type` (`id`),
-  CONSTRAINT `product_details_ibfk_2` FOREIGN KEY (`product_number`) REFERENCES `product` (`product_number`)
+  CONSTRAINT `product_details_ibfk_2` FOREIGN KEY (`product_number`) REFERENCES `product` (`product_number`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `product_details` */
 
 insert  into `product_details`(`product_number`,`product_line_number`,`type`,`width`,`height`,`final_price`) values 
-('10001',2,1,1000,1350,32),
-('10001',3,5,1000,700,40),
-('10001',6,1,1000,1600,20),
-('10001',7,7,123,123,20),
-('10001',8,3,100,122,20),
-('10002',1,2,100,600,20),
-('10002',2,15,100,300,20);
+('12951',1,1,2280,900,24),
+('12951',2,1,900,500,20),
+('12951',3,2,4950,680,20),
+('12951',4,13,1300,1,20);
+
+/*Table structure for table `users` */
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `username` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `users` */
+
+insert  into `users`(`username`,`password`) values 
+('admin','admin1234'),
+('keiyin','keiyin');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

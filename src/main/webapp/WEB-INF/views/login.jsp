@@ -10,13 +10,13 @@
     <div style="text-align: center">
         <h1>Staff Login</h1>
         <form action="login" method="post">
-            <label for="email">Email:</label>
-            <input name="name" size="30" />
+            <label for="userName">User Name:</label>
+            <input name="userName" size="30" />
             <br><br>
             <label for="password">Password:</label>
             <input type="password" name="password" size="30" />
-             <input hidden="password" name="currentPage" value="1" />
-            <br>${message}
+             <!-- <input hidden="password" name="currentPage" value="1" /> -->
+            <br>
             <br><br>           
             <button type="submit">Login</button>
         </form>

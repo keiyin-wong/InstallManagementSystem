@@ -384,8 +384,11 @@ function deleteData(productNumber, lineNumber) {
 	<main class='container' role='main'>
 		<div class='container'>
 			<div>
-				<a class="btn btn-info" style="margin-top: 10px" type="button" href="${pageContext.request.contextPath}">Back</a>
-				<h2>Order Details</h2>
+				<form action="${pageContext.request.contextPath}/product/product.html" method="post">
+				    <button  class="btn btn-info" type="submit" name="your_name" value="your_value" class="btn-link">Back</button>
+				</form>
+<%-- 				<a class="btn btn-info" style="margin-top: 10px" type="button" href="${pageContext.request.contextPath}/product/product.html">Back</a>
+ --%>				<h2>Order Details</h2>
 			</div>
 			<div class='row'>
 				<div class='col-xs-12'>

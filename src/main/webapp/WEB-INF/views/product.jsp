@@ -224,18 +224,23 @@ var storedCurrentpage = 1;
 			tableBodyHtml += "<tr><td colspan='6' style='text-align: center;'>No Records Found</td></tr>";
 		}
 		$.each(data, function() {
+			var totalPrice = 0;
+			var productDetailList = this.productDetail;
+			$.each(productDetailList, function(index, pd) {
+				totalPrice += (pd.finalPrice * Math.round(((pd.width)/304.8) * 10) / 10);
+			});
 			tableBodyHtml += '<tr>'
 					+ '<td><a href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
 					+ '<td>'
-					+ this.date.month
+					+ this.date.dayOfMonth + ' ' +this.date.month + ' ' + this.date.year
 					+ '</td>'
 					+ '<td>'
-					+ "No total price first"
+					+ 'RM' + totalPrice
 					+ '</td>'
 					+ '<td>'
 					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>'
 					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+')">Delete</button>'
-					+ '<a class="btn btn-info btn-sm" type="button" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?productNumber='+this.productNumber+'">Print</a>'
+					+ '<a class="btn btn-info btn-sm" type="button" target="_blank" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?productNumber='+this.productNumber+'">Print</a>'
 					+ '</td>' + '</tr>';
 		});
 		$('#productTableBody').html(tableBodyHtml);

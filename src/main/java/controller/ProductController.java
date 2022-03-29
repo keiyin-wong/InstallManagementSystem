@@ -1,10 +1,13 @@
 package controller;
  
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -31,12 +34,16 @@ public class ProductController {
 	ProductDAO productDAO;
 	
  
-	@RequestMapping(value = "/product.html", method = RequestMethod.GET)
-	public ModelAndView showMessage() {
+	@RequestMapping(value = "/product.html", method = RequestMethod.POST)
+	public ModelAndView showMessage(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("in controller");
- 
-		ModelAndView mv = new ModelAndView("product");
-		return mv;
+		HttpSession session=request.getSession();  
+		 if(session!=null){  
+			 ModelAndView mv = new ModelAndView("product");
+			return mv;
+		 }else {
+			 return new ModelAndView("login");
+		 }
 	}
 	
 	@RequestMapping(value = "/productDetail.html", method = RequestMethod.GET)
