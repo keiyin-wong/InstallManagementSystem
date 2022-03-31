@@ -185,12 +185,9 @@ $(document).ready(function(){
 	});
 
 
-
-	
-	
 	rendertable();
 
-	$("#productDetailForm").submit(function( event ) {
+	$("#productDetailForm").submit(function( event ) {    //Update product detail form
 		event.preventDefault();
 		var parameter = $('#productDetailForm').serialize();
 		var spinner = $('#loader');
@@ -200,6 +197,7 @@ $(document).ready(function(){
 			url: "updateProductDetail?productNumber="+ urlParams.get('productNumber'),
 			cache : false,
 			data: parameter,
+			/* contentType: "charset=utf-8", */
 			success: function(data){
 				spinner.hide();
 				rendertable();
@@ -318,7 +316,7 @@ function rendertable(){
 	});
 }
 
-function editProductDetail(productNumber, lineNumber, index){
+function editProductDetail(productNumber, lineNumber, index){  //Open edit product detail modal
 	$('#editModal').modal();
 	$.ajax({
 		type : "GET",
@@ -331,6 +329,7 @@ function editProductDetail(productNumber, lineNumber, index){
 			$('#width').val(data.width);
 			$('#height').val(data.height);
 			$('#price').val(data.finalPrice);
+			$('#description').val(data.description);
 		},
 		error : function(jgXHR) {
 			alert(jgXHR.responseText);
@@ -338,12 +337,13 @@ function editProductDetail(productNumber, lineNumber, index){
 	});
 }
 
-function createProductDetail(){
+function createProductDetail(){   //Open create product detail modal
 	$('#lineNumberShow').val("");
 	$('#createType').val("");
 	$('#createWidth').val("");
 	$('#createHeight').val("");
 	$('#createPrice').val("");
+	$('#createDescription').val("");
 	$('#createProductDetailModal').modal();
 }
 
@@ -563,6 +563,12 @@ function deleteData(productNumber, lineNumber) {
 							</div>
 						</div>
 						<div class="form-group row">
+							<label class="col-sm-3 col-form-label" for="width">Description</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="description" name="description" value="">
+							</div>
+						</div>
+						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="width">Width</label>
 							<div class="col-sm-9">
 								<input type="number" class="form-control" id="width" name="width" value="" min="1" step="0.01" required>
@@ -618,6 +624,12 @@ function deleteData(productNumber, lineNumber) {
 											data-placeholder="createType"
 											class="form-control order_state-picker" form="createProductDetailForm" required>
 								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label" for="width">Description</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="createDescription" name="createDescription" value="">
 							</div>
 						</div>
 						<div class="form-group row">

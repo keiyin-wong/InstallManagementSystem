@@ -43,7 +43,7 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	
 	<bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">    
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>    
-		<property name="url" value="jdbc:mysql://localhost:3306/installation"></property>    
+		<property name="url" value="jdbc:mysql://localhost:3306/installation?useUnicode=true&amp;characterEncoding=UTF-8"></property>    
 		<property name="username" value="keiyin"></property>    
 		<property name="password" value="keiyin"></property>    
 	</bean>

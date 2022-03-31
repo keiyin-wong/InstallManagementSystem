@@ -2,6 +2,7 @@ package model;
 
 public class ProductDetail {
 	String productNumber;
+	String description;
 	InstallType type;
 	int productLineNumber;
 	double width;
@@ -44,5 +45,11 @@ public class ProductDetail {
 	}
 	public void setHeight(double height) {
 		this.height = height;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

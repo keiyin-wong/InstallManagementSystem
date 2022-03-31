@@ -167,6 +167,7 @@ public class ProductController {
 		double width = Double.parseDouble(request.getParameter("width"));
 		double height = Double.parseDouble(request.getParameter("height"));
 		double price = Double.parseDouble(request.getParameter("price"));
+		String description = request.getParameter("description") == null ? "" : request.getParameter("description");
 		
 		it.setId(type);
 		pd.setProductNumber(productNumber);
@@ -175,13 +176,16 @@ public class ProductController {
 		pd.setHeight(height);
 		pd.setWidth(width);
 		pd.setFinalPrice(price);
+		pd.setDescription(description);
 		
 		
 		System.out.println("Getting install type list");
 		try {
 			return new ResponseEntity<>(productDAO.updateProductDetail(pd), HttpStatus.OK);
 		}catch(Exception e){
+			System.out.println(e);
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 	}
 	
@@ -229,11 +233,13 @@ public class ProductController {
 		double width = Double.parseDouble(request.getParameter("createWidth"));
 		double height = Double.parseDouble(request.getParameter("createHeight"));
 		double price = Double.parseDouble(request.getParameter("createPrice"));
+		String description = request.getParameter("createDescription") == null ? "" : request.getParameter("createDescription");
 		
 		System.out.println("Creating product detail");
 		try {
-			return new ResponseEntity<>(productDAO.createProductDetail(productNumber, lineNumber, type, width, height,price), HttpStatus.OK);
+			return new ResponseEntity<>(productDAO.createProductDetail(productNumber, lineNumber, type, width, height,price,description), HttpStatus.OK);
 		}catch(Exception e){
+			System.out.println(e);
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
