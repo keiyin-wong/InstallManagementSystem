@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
 
 import dao.ProductDAO;
 import model.InstallType;
@@ -164,8 +166,8 @@ public class ProductController {
 		InstallType it = new InstallType();
 		int lineNumber = Integer.parseInt(request.getParameter("lineNumber"));
 		int type = Integer.parseInt(request.getParameter("type"));
-		double width = Double.parseDouble(request.getParameter("width"));
-		double height = Double.parseDouble(request.getParameter("height"));
+		double width = (request.getParameter("width") == "" || request.getParameter("width") == null)? 0.0: Double.parseDouble(request.getParameter("width"));
+		double height = (request.getParameter("height") == "" || request.getParameter("height") == null)? 0.0: Double.parseDouble(request.getParameter("height"));
 		double price = Double.parseDouble(request.getParameter("price"));
 		String description = request.getParameter("description") == null ? "" : request.getParameter("description");
 		
@@ -230,8 +232,8 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<?> createProductDetail(@RequestParam String productNumber, HttpServletRequest request){
 		int lineNumber = Integer.parseInt(request.getParameter("createLineNumber"));
 		int type = Integer.parseInt(request.getParameter("createType"));
-		double width = Double.parseDouble(request.getParameter("createWidth"));
-		double height = Double.parseDouble(request.getParameter("createHeight"));
+		double width = (request.getParameter("createWidth") == "" || request.getParameter("createWidth") == null)? 0.0: Double.parseDouble(request.getParameter("createWidth"));
+		double height = (request.getParameter("createHeight") == "" || request.getParameter("createHeight") == null)? 0.0: Double.parseDouble(request.getParameter("createHeight"));
 		double price = Double.parseDouble(request.getParameter("createPrice"));
 		String description = request.getParameter("createDescription") == null ? "" : request.getParameter("createDescription");
 		
@@ -245,16 +247,20 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="/generateProductDetailReport.do")
-	public ModelAndView generateProductDetailReport(@RequestParam String productNumber, HttpServletRequest request) {
+	public ModelAndView generateProductDetailReport(@RequestParam String productNumber, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> model = new HashMap<String, Object>();
+		String fileName = "keiyin.pdf";
+		
+		Properties contentDispositionProperties = new Properties();
+		contentDispositionProperties.setProperty("pdf", "attachment; filename="+fileName+".pdf");
+		
 		model.put("view", "productDetailReport");
 		model.put("format", "pdf");
 		model.put("productNumber", productNumber);
+		model.put("contentDispositionMappings", contentDispositionProperties);
 		
 		return new ModelAndView("productDetailReport", model);
 	}
-	
-	
 	
 	
 }

@@ -6,6 +6,7 @@ public class InstallType {
 	String desc_chinese;
 	boolean diff_price;
 	double price;
+	boolean directPrice;
 	
 	public int getId() {
 		return id;
@@ -36,5 +37,11 @@ public class InstallType {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public boolean isDirectPrice() {
+		return directPrice;
+	}
+	public void setDirectPrice(boolean directPrice) {
+		this.directPrice = directPrice;
 	}
 }

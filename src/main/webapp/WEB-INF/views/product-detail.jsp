@@ -31,6 +31,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
 <script src="${pageContext.request.contextPath}/js/plugins.js"></script>
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
 
 <style>
@@ -88,8 +89,8 @@ $(document).ready(function(){
 	        $.each(data, function() {
 		        let desc_chinese = this.desc_chinese == null ? '' : this.desc_chinese;
 		        let desc_eng = this.desc_eng == null ? '' : this.desc_eng;
-	            $el.append($("<option></option>").attr("value", this.id).html(desc_chinese+" ("+desc_eng+")"));
-	            $createEl.append($("<option></option>").attr("value", this.id).html(desc_chinese+" ("+desc_eng+")"));
+	            $el.append($("<option></option>").attr("value", this.id).attr("direct-price", this.directPrice).html(desc_chinese+" ("+desc_eng+")"));
+	            $createEl.append($("<option></option>").attr("value", this.id).attr("direct-price", this.directPrice).html(desc_chinese+" ("+desc_eng+")"));
 	        });
 
 	    	$('#createType').change(function(){
@@ -110,6 +111,13 @@ $(document).ready(function(){
 				    		});
 						}else
 							$('#createPrice').val(data[i].price);
+						if(data[i].directPrice == true){
+							$('#createWidthDiv').hide();
+							$('#createHeightDiv').hide();
+						}else{
+							$('#createWidthDiv').show();
+							$('#createHeightDiv').show();
+						}
 						break;
 					}
 		    	}
@@ -119,7 +127,7 @@ $(document).ready(function(){
 	    		var changedValue = this.value;
 	    		for(let i = 0; i < data.length; i++){
 					if(data[i].id == changedValue){
-						if(data[i].diff_price == true){
+						if(data[i].diff_price == true){ // change price accordingly
 							var heightValue = $('#height').val() == ""? 0 : $('#height').val();
 							$.ajax({
 				    			type : "GET",
@@ -133,6 +141,11 @@ $(document).ready(function(){
 				    		});
 						}else
 							$('#price').val(data[i].price);
+						if(data[i].directPrice == true){
+							hideWidthHeightDiv();
+						}else{
+							showWidthHeightDiv();
+						}
 						break;
 					}
 		    	}
@@ -186,29 +199,56 @@ $(document).ready(function(){
 
 
 	rendertable();
+	
+	$("#productDetailForm").validate({
+		rules : {
+			width: {
+				required: function(){
+					if($('#type').find('option:selected').attr('direct-price') == "true"){
+						return false;
+					}else
+						return true;
+				}
+			},
+			height: {
+				required: function(){
+					if($('#type').find('option:selected').attr('direct-price') == "true"){
+						return false;
+					}else
+						return true;
+				}
+			}
+		}
+		
+	});
 
 	$("#productDetailForm").submit(function( event ) {    //Update product detail form
 		event.preventDefault();
-		var parameter = $('#productDetailForm').serialize();
-		var spinner = $('#loader');
-		spinner.show();
-		$.ajax({
-			type: "POST",
-			url: "updateProductDetail?productNumber="+ urlParams.get('productNumber'),
-			cache : false,
-			data: parameter,
-			/* contentType: "charset=utf-8", */
-			success: function(data){
-				spinner.hide();
-				rendertable();
-				$('#editModal').modal('hide');
-			},
-			error : function(data){
-				spinner.hide();
-				alert(jgXHR.responseText);
+		if($("#productDetailForm").valid()){
+			if($('#type').find('option:selected').attr('direct-price') == "true"){
+				$('#width').val(null);
+				$('#height').val(null);
 			}
-		}).done(function(){spinner.hide();});
-		
+			var parameter = $('#productDetailForm').serialize();
+			var spinner = $('#loader');
+			spinner.show();
+			$.ajax({
+				type: "POST",
+				url: "updateProductDetail?productNumber="+ urlParams.get('productNumber'),
+				cache : false,
+				data: parameter,
+				/* contentType: "charset=utf-8", */
+				success: function(data){
+					spinner.hide();
+					rendertable();
+					$('#editModal').modal('hide');
+				},
+				error : function(data){
+					spinner.hide();
+					alert(jgXHR.responseText);
+				}
+			}).done(function(){spinner.hide();});
+		}
 	});
 
 	$("#productForm").submit(function( event ) {
@@ -232,28 +272,55 @@ $(document).ready(function(){
 		}).done(function(){spinner.hide();});
 		
 	});
+	
+	$("#createProductDetailForm").validate({
+		rules : {
+			createWidth: {
+				required: function(){
+					if($('#createType').find('option:selected').attr('direct-price') == "true"){
+						return false;
+					}else
+						return true;
+				}
+			},
+			createHeight: {
+				required: function(){
+					if($('#createType').find('option:selected').attr('direct-price') == "true"){
+						return false;
+					}else
+						return true;
+				}
+			}
+		}
+		
+	});
 
 	$("#createProductDetailForm").submit(function( event ) {
 		event.preventDefault();
-		var parameter = $('#createProductDetailForm').serialize();
-		var spinner = $('#loader');
-		spinner.show();
-		$.ajax({
-			type: "POST",
-			url: "createProductDetail?productNumber=" + urlParams.get('productNumber'),
-			cache : false,
-			data: parameter,
-			success: function(data){
-				spinner.hide();
-				rendertable();
-				$('#createProductDetailModal').modal('hide');
-			},
-			error : function(data){
-				spinner.hide();
-				alert(jgXHR.responseText);
+		if($("#createProductDetailForm").valid()){
+			if($('#createType').find('option:selected').attr('direct-price') == "true" ){
+				$('#createWidth').val(null);
+				$('#createHeight').val(null);
 			}
-		}).done(function(){spinner.hide();});
-		
+			var parameter = $('#createProductDetailForm').serialize();
+			var spinner = $('#loader');
+			spinner.show();
+			$.ajax({
+				type: "POST",
+				url: "createProductDetail?productNumber=" + urlParams.get('productNumber'),
+				cache : false,
+				data: parameter,
+				success: function(data){
+					spinner.hide();
+					rendertable();
+					$('#createProductDetailModal').modal('hide');
+				},
+				error : function(data){
+					spinner.hide();
+					alert(jgXHR.responseText);
+				}
+			}).done(function(){spinner.hide();});
+		}	
 	});
 
 	
@@ -277,26 +344,33 @@ function rendertable(){
 			var totalSum = 0.0;
 			$.each(data.productDetail, function(index, item) {
 				var isLastElement = index == data.productDetail.length -1;
+				let desc = item.description == null? "": item.description;
+				let totalPrice = item.type.directPrice == true? item.finalPrice : (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
+				let width = item.type.directPrice == true? "-" : item.width;
+				let height = item.type.directPrice == true? "-" : item.height;
+				let ft = item.type.directPrice == true? "-" :  Math.round(((item.width)/304.8) * 10) / 10;
 				index += 1;
 				tableBodyHtml += "<tr>"
 						+ '<td>' + index + '</td>'
 						+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
-						+ '<td>' + item.width + '</td>'
-						+ '<td>' + Math.round(((item.width)/304.8) * 10) / 10  + '</td>'
-						+ '<td>' + item.height + '</td>'
+						+ '<td>' + desc + '</td>'
+						+ '<td>' + width + '</td>'
+						+ '<td>' + ft  + '</td>'
+						+ '<td>' + height + '</td>'
 						+ '<td>' + item.finalPrice + '</td>'
-						+ '<td>' + (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10) + '</td>'
+						+ '<td>' + totalPrice + '</td>'
 						+ '<td>'
 						+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="editProductDetail('+this.productNumber+','+ this.productLineNumber+','+index+')">Edit</button>'
 						+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+','+this.productLineNumber+')">Delete</button>'
 						+ '</td>'
 						+ '</tr>';
-				totalSum += (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
+				totalSum += totalPrice;
 						
 				if(isLastElement){
 					$('#createLineNumber').val(this.productLineNumber + 1);
 					$('#createLineNumberShow').val(index+1);
 					tableBodyHtml += "<tr>"
+					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
@@ -316,6 +390,16 @@ function rendertable(){
 	});
 }
 
+function hideWidthHeightDiv(){
+	$('#widthDiv').hide();
+	$('#heightDiv').hide();
+}
+
+function showWidthHeightDiv(){
+	$('#widthDiv').show();
+	$('#heightDiv').show();
+}
+
 function editProductDetail(productNumber, lineNumber, index){  //Open edit product detail modal
 	$('#editModal').modal();
 	$.ajax({
@@ -330,6 +414,9 @@ function editProductDetail(productNumber, lineNumber, index){  //Open edit produ
 			$('#height').val(data.height);
 			$('#price').val(data.finalPrice);
 			$('#description').val(data.description);
+			if(data.type.directPrice==true){
+				hideWidthHeightDiv();
+			}
 		},
 		error : function(jgXHR) {
 			alert(jgXHR.responseText);
@@ -344,6 +431,8 @@ function createProductDetail(){   //Open create product detail modal
 	$('#createHeight').val("");
 	$('#createPrice').val("");
 	$('#createDescription').val("");
+	$('#createWidthDiv').show("");
+	$('#createHeightDiv').show("");
 	$('#createProductDetailModal').modal();
 }
 
@@ -474,16 +563,17 @@ function deleteData(productNumber, lineNumber) {
 										</div>
 										<div class='col-xs-12'>
 											<div class='table-responsive orders-list'>
-												<table id="table" class='table table-striped table-hover'>
+												<table id="table" class='table table-striped table-hover' style="width:80%">
 													<thead>
 														<tr>
-															<th>Line number</th>
-															<th>Type</th>
+															<th style="width:5%">#</th>
+															<th style="width:15%">Type</th>
+															<th>Description</th>
 															<th>Width</th>
 															<th>FT</th>
 															<th>Height</th>
-															<th>Price per service</th>
-															<th>Total price</th>
+															<th style="width:10%">Price per service</th>
+															<th style="width:10%">Total price</th>
 															<th>Actions</th>
 														</tr>
 													</thead>
@@ -568,16 +658,16 @@ function deleteData(productNumber, lineNumber) {
 								<input type="text" class="form-control" id="description" name="description" value="">
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row" id="widthDiv">
 							<label class="col-sm-3 col-form-label" for="width">Width</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="width" name="width" value="" min="1" step="0.01" required>
+								<input type="number" class="form-control" id="width" name="width" value="" min="1" step="0.01">
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row" id="heightDiv">
 							<label class="col-sm-3 col-form-label" for="height">Height</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="height" name="height" value="" min="1" step="0.01" required>
+								<input type="number" class="form-control" id="height" name="height" value="" min="1" step="0.01">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -632,16 +722,16 @@ function deleteData(productNumber, lineNumber) {
 								<input type="text" class="form-control" id="createDescription" name="createDescription" value="">
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row" id="createWidthDiv">
 							<label class="col-sm-3 col-form-label" for="createWidth">Width</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="createWidth" name="createWidth" value="" min="1" step="1" required>
+								<input type="number" class="form-control" id="createWidth" name="createWidth" value="" min="1" step="1">
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row" id="createHeightDiv">
 							<label class="col-sm-3 col-form-label" for="createHeight">Height</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="createHeight" name="createHeight" value="" min="1" step="1" required>
+								<input type="number" class="form-control" id="createHeight" name="createHeight" value="" min="1" step="1">
 							</div>
 						</div>
 						<div class="form-group row">

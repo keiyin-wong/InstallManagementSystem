@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.lucene.analysis.ga.IrishAnalyzer;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -64,6 +65,7 @@ public class ProductDAO {
 				+ "pd.final_price, "
 				+ "pd.desc, "
 				+ "it.diff_price, "
+				+ "it.is_direct_price, "
 				+ "(CASE WHEN it.diff_price = 1 THEN itdf.price WHEN it.diff_price = 0 THEN it.price END) AS price "
 				+ "FROM `product` p "
 				+ "JOIN `product_details` pd ON p.product_number = pd.product_number "
@@ -90,6 +92,7 @@ public class ProductDAO {
 	            it.setDesc_chinese(rs.getString("desc_chinese"));
 	            it.setDiff_price(rs.getBoolean("diff_price"));
 	            it.setPrice(rs.getDouble("price"));
+	            it.setDirectPrice(rs.getBoolean("is_direct_price"));
 	            pd.setType(it);
    
 	            return pd;    
@@ -110,6 +113,7 @@ public class ProductDAO {
 				+ "pd.desc, "
 				+ "pd.final_price, "
 				+ "it.diff_price, "
+				+ "it.is_direct_price, "
 				+ "(CASE WHEN it.diff_price = 1 THEN itdf.price WHEN it.diff_price = 0 THEN it.price END) AS price "
 				+ "FROM `product` p "
 				+ "JOIN `product_details` pd ON p.product_number = pd.product_number "
@@ -135,6 +139,7 @@ public class ProductDAO {
 	            it.setDesc_chinese(rs.getString("desc_chinese"));
 	            it.setDiff_price(rs.getBoolean("diff_price"));
 	            it.setPrice(rs.getDouble("price"));
+	            it.setDirectPrice(rs.getBoolean("is_direct_price"));
 	            pd.setType(it);
    
 	            return pd;    
@@ -216,6 +221,7 @@ public class ProductDAO {
 	            it.setDesc_chinese(rs.getString("desc_chinese"));
 	            it.setDiff_price(rs.getBoolean("diff_price"));
 	            it.setPrice(rs.getDouble("price"));
+	            it.setDirectPrice(rs.getBoolean("is_direct_price"));
 	            return it;    
 	        }    
 	    });    
