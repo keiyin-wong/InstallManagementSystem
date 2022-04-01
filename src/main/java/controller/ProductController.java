@@ -1,6 +1,9 @@
 package controller;
  
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +31,12 @@ import dao.ProductDAO;
 import model.InstallType;
 import model.Product;
 import model.ProductDetail;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
  
 @Controller
 @RequestMapping(value = "/product")
@@ -34,6 +44,9 @@ import model.ProductDetail;
 public class ProductController {
 	@Autowired
 	ProductDAO productDAO;
+	
+	@Autowired
+	DriverManagerDataSource ds;
 	
  
 	@RequestMapping(value = "/product.html", method = RequestMethod.POST)
@@ -247,19 +260,44 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="/generateProductDetailReport.do")
-	public ModelAndView generateProductDetailReport(@RequestParam String productNumber, HttpServletRequest request, HttpServletResponse response) {
-		Map<String, Object> model = new HashMap<String, Object>();
-		String fileName = "keiyin.pdf";
+	public void generateProductDetailReport(@RequestParam String productNumber, HttpServletRequest request, HttpServletResponse response) {
 		
-		Properties contentDispositionProperties = new Properties();
-		contentDispositionProperties.setProperty("pdf", "attachment; filename="+fileName+".pdf");
+		// Method 1, used with the JasperReportMultipleViewFormat
 		
-		model.put("view", "productDetailReport");
-		model.put("format", "pdf");
-		model.put("productNumber", productNumber);
-		model.put("contentDispositionMappings", contentDispositionProperties);
+//		Map<String, Object> model = new HashMap<String, Object>();
+//		String filename = "keiyin.pdf";
+//		
+//		model.put("view", "productDetailReport");
+//		model.put("format", "pdf");
+//		model.put("productNumber", productNumber);
+//		return new ModelAndView("productDetailReport", model);
 		
-		return new ModelAndView("productDetailReport", model);
+
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		String filename = productNumber + ".pdf";
+		
+		parameterMap.put("productNumber", productNumber);
+
+		
+		try {
+			InputStream inputStream = this.getClass().getResourceAsStream("/reports/Invoice.jrxml");
+			JasperReport jasperDesign = JasperCompileManager.compileReport(inputStream);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameterMap, ds.getConnection());
+			
+			 response.setContentType("application/pdf");
+	         response.addHeader("Content-disposition", "inline; filename=" +filename);
+	         OutputStream outputStream = response.getOutputStream();
+	         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
