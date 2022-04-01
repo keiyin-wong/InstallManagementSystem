@@ -8,6 +8,7 @@ public class ProductDetail {
 	double width;
 	double height;
 	double finalPrice;
+	int quantity;
 	
 	public double getFinalPrice() {
 		return finalPrice;
@@ -52,4 +53,11 @@ public class ProductDetail {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
 }

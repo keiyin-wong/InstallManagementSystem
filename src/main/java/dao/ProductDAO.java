@@ -64,6 +64,7 @@ public class ProductDAO {
 				+ "pd.height, "
 				+ "pd.final_price, "
 				+ "pd.desc, "
+				+ "pd.quantity, "
 				+ "it.diff_price, "
 				+ "it.is_direct_price, "
 				+ "(CASE WHEN it.diff_price = 1 THEN itdf.price WHEN it.diff_price = 0 THEN it.price END) AS price "
@@ -86,6 +87,7 @@ public class ProductDAO {
 	            pd.setWidth(rs.getDouble("width"));
 	            pd.setFinalPrice((rs.getDouble("final_price")));
 	            pd.setDescription(rs.getString("desc"));
+	            pd.setQuantity(rs.getInt("quantity"));
 	            
 	            it.setId(rs.getInt("type"));
 	            it.setDesc_eng(rs.getString("desc_english"));
@@ -111,6 +113,7 @@ public class ProductDAO {
 				+ "pd.width, "
 				+ "pd.height, "
 				+ "pd.desc, "
+				+ "pd.quantity, "
 				+ "pd.final_price, "
 				+ "it.diff_price, "
 				+ "it.is_direct_price, "
@@ -133,6 +136,7 @@ public class ProductDAO {
 	            pd.setWidth(rs.getDouble("width"));
 	            pd.setFinalPrice((rs.getDouble("final_price")));
 	            pd.setDescription(rs.getString("desc"));
+	            pd.setQuantity(rs.getInt("quantity"));
 	            
 	            it.setId(rs.getInt("type"));
 	            it.setDesc_eng(rs.getString("desc_english"));
@@ -229,7 +233,8 @@ public class ProductDAO {
 	
 	public int updateProductDetail(ProductDetail pd){    
 	    String qry = "UPDATE `product_details` "
-	    		+ "SET `type` = " + pd.getType().getId() +", `width` = "+pd.getWidth()+",`height` = "+pd.getHeight() + ",`final_price` = " + pd.getFinalPrice() + ",`desc` = '" + pd.getDescription() + "' "
+	    		+ "SET `type` = " + pd.getType().getId() +", `width` = "+pd.getWidth()+",`height` = "+pd.getHeight() 
+	    		+ ",`final_price` = " + pd.getFinalPrice() + ",`desc` = '" + pd.getDescription() + "' " + ",`quantity`=" + pd.getQuantity()
 	    		+ " WHERE product_number='"+pd.getProductNumber()+"' AND product_line_number="+pd.getProductLineNumber();
 	    return template.update(qry);    
 	}
@@ -253,8 +258,8 @@ public class ProductDAO {
 	    return template.update(qry);    
 	}
 	
-	public int createProductDetail(String productNumber, int lineNumber, int type, double width, double height, double price, String description){    
-	    String qry = "INSERT INTO `product_details` VALUE ('"+productNumber+"',"+lineNumber+","+type+", "+width+", "+height+", "+ price + ", '" + description  +"')";
+	public int createProductDetail(String productNumber, int lineNumber, int type, double width, double height, double price, String description, int quantity){    
+	    String qry = "INSERT INTO `product_details` VALUE ('"+productNumber+"',"+lineNumber+","+type+", "+width+", "+height+", "+ price + ", '" + description +"'," + quantity +")";
 	    return template.update(qry);    
 	}
 	

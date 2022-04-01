@@ -183,6 +183,7 @@ public class ProductController {
 		double height = (request.getParameter("height") == "" || request.getParameter("height") == null)? 0.0: Double.parseDouble(request.getParameter("height"));
 		double price = Double.parseDouble(request.getParameter("price"));
 		String description = request.getParameter("description") == null ? "" : request.getParameter("description");
+		int quantity = (request.getParameter("quantity") == "" || request.getParameter("quantity") == null)? 0 : Integer.parseInt(request.getParameter("quantity"));
 		
 		it.setId(type);
 		pd.setProductNumber(productNumber);
@@ -192,6 +193,7 @@ public class ProductController {
 		pd.setWidth(width);
 		pd.setFinalPrice(price);
 		pd.setDescription(description);
+		pd.setQuantity(quantity);
 		
 		
 		System.out.println("Getting install type list");
@@ -249,10 +251,11 @@ public class ProductController {
 		double height = (request.getParameter("createHeight") == "" || request.getParameter("createHeight") == null)? 0.0: Double.parseDouble(request.getParameter("createHeight"));
 		double price = Double.parseDouble(request.getParameter("createPrice"));
 		String description = request.getParameter("createDescription") == null ? "" : request.getParameter("createDescription");
+		int quantity = (request.getParameter("createQuantity") == "" || request.getParameter("createQuantity") == null)? 0 : Integer.parseInt(request.getParameter("createQuantity"));
 		
 		System.out.println("Creating product detail");
 		try {
-			return new ResponseEntity<>(productDAO.createProductDetail(productNumber, lineNumber, type, width, height,price,description), HttpStatus.OK);
+			return new ResponseEntity<>(productDAO.createProductDetail(productNumber, lineNumber, type, width, height,price,description, quantity), HttpStatus.OK);
 		}catch(Exception e){
 			System.out.println(e);
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

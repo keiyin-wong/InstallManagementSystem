@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2022-04-01T17:05:35 -->
+<!-- 2022-04-01T19:00:39 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="template.engine" value="tabular_template"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mariaDB-installation"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
@@ -42,17 +43,18 @@ CONCAT(IFNULL(it.desc_english, ''),' (',IFNULL(it.desc_chinese, ''), ')') AS `ty
 pd.width AS width,
 ROUND((pd.width/304.8),1) AS ft,
 pd.height AS height,
+pd.quantity AS quantity,
 pd.final_price AS final_price,
 (
 CASE
-	WHEN it.is_direct_price=1 THEN pd.final_price
+	WHEN it.is_direct_price=1 THEN pd.final_price * pd.quantity
 	ELSE ROUND((pd.width/304.8),1) * pd.final_price
 	END
 ) AS total_price
 FROM product p
 JOIN product_details pd ON p.product_number = pd.product_number
 JOIN installation_type it ON pd.type = it.id
-WHERE pd.product_number = '$P!{productNumber}'
+WHERE pd.product_number ='$P!{productNumber}'
 ORDER BY product_line_number ASC;]]>
 	</queryString>
 	<field name="product_number" class="java.lang.String"/>
@@ -64,6 +66,7 @@ ORDER BY product_line_number ASC;]]>
 	<field name="width" class="java.lang.Double"/>
 	<field name="ft" class="java.lang.Double"/>
 	<field name="height" class="java.lang.Double"/>
+	<field name="quantity" class="java.lang.Long"/>
 	<field name="final_price" class="java.lang.Double"/>
 	<field name="total_price" class="java.lang.Double"/>
 	<variable name="subTotal" class="java.lang.Double" calculation="Sum">
@@ -203,7 +206,7 @@ Tel: 03-5886 2985]]></text>
 				<text><![CDATA[TYPE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="219" y="0" width="61" height="30" backcolor="#FFFFFF" uuid="b61d54c4-b558-4ffc-99b7-ef9225c279ad">
+				<reportElement mode="Opaque" x="219" y="0" width="50" height="30" backcolor="#FFFFFF" uuid="b61d54c4-b558-4ffc-99b7-ef9225c279ad">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a86d5db6-9411-4267-b147-27e3b503e121"/>
 				</reportElement>
 				<box>
@@ -219,7 +222,7 @@ Tel: 03-5886 2985]]></text>
 				<text><![CDATA[WIDTH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="280" y="0" width="49" height="30" backcolor="#FFFFFF" uuid="a6f73d96-5c49-4cea-b24a-80f56f8ae154">
+				<reportElement mode="Opaque" x="320" y="0" width="49" height="30" backcolor="#FFFFFF" uuid="a6f73d96-5c49-4cea-b24a-80f56f8ae154">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a86d5db6-9411-4267-b147-27e3b503e121"/>
 				</reportElement>
 				<box>
@@ -235,8 +238,9 @@ Tel: 03-5886 2985]]></text>
 				<text><![CDATA[FT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="329" y="0" width="70" height="30" backcolor="#FFFFFF" uuid="347fdaf9-2e89-4a76-9087-d1b729f541fc">
+				<reportElement mode="Opaque" x="269" y="0" width="51" height="30" backcolor="#FFFFFF" uuid="347fdaf9-2e89-4a76-9087-d1b729f541fc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a86d5db6-9411-4267-b147-27e3b503e121"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.0"/>
@@ -251,7 +255,7 @@ Tel: 03-5886 2985]]></text>
 				<text><![CDATA[HEIGHT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="399" y="0" width="91" height="30" backcolor="#FFFFFF" uuid="4fd66b62-33ad-4995-b8ca-2def2fc829d9">
+				<reportElement mode="Opaque" x="429" y="0" width="60" height="30" backcolor="#FFFFFF" uuid="4fd66b62-33ad-4995-b8ca-2def2fc829d9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a86d5db6-9411-4267-b147-27e3b503e121"/>
 				</reportElement>
 				<box>
@@ -264,10 +268,10 @@ Tel: 03-5886 2985]]></text>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[SERVICE PRICE]]></text>
+				<text><![CDATA[PRICE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="490" y="0" width="64" height="30" backcolor="#FFFFFF" uuid="9744b118-876f-4b7e-80bd-021f79678327">
+				<reportElement mode="Opaque" x="489" y="0" width="64" height="30" backcolor="#FFFFFF" uuid="9744b118-876f-4b7e-80bd-021f79678327">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a86d5db6-9411-4267-b147-27e3b503e121"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -305,6 +309,23 @@ Tel: 03-5886 2985]]></text>
 				</textElement>
 				<text><![CDATA[DESCRIPTION]]></text>
 			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="369" y="0" width="60" height="30" backcolor="#FFFFFF" uuid="417b4d63-09f0-4529-99d4-26ede03e87bb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a86d5db6-9411-4267-b147-27e3b503e121"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANTITY]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -336,7 +357,7 @@ Tel: 03-5886 2985]]></text>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement key="" style="Row" x="219" y="0" width="61" height="30" uuid="f8c1cacc-8721-4f37-98bb-ba0a2d03de9b"/>
+				<reportElement key="" style="Row" x="219" y="0" width="50" height="30" uuid="f8c1cacc-8721-4f37-98bb-ba0a2d03de9b"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -349,7 +370,7 @@ Tel: 03-5886 2985]]></text>
 				<textFieldExpression><![CDATA[$F{is_direct_price} == true ? "-" : (($F{width} % 1 == 0) ? String.format("%.0f", $F{width} ) : $F{width})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement key="" style="Row" x="280" y="0" width="49" height="30" uuid="19a5408b-5d2f-4e35-b124-816f0e0af1ad"/>
+				<reportElement key="" style="Row" x="320" y="0" width="49" height="30" uuid="19a5408b-5d2f-4e35-b124-816f0e0af1ad"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -362,7 +383,7 @@ Tel: 03-5886 2985]]></text>
 				<textFieldExpression><![CDATA[$F{is_direct_price} == true ? "-" : $F{ft}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement key="" style="Row" x="329" y="0" width="70" height="30" uuid="dbcadd30-3325-4aeb-9895-c6c21262bdd6"/>
+				<reportElement key="" style="Row" x="269" y="0" width="51" height="30" uuid="dbcadd30-3325-4aeb-9895-c6c21262bdd6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -375,7 +396,7 @@ Tel: 03-5886 2985]]></text>
 				<textFieldExpression><![CDATA[$F{is_direct_price} == true ? "-" :(($F{height} % 1 == 0) ? String.format("%.0f", $F{height} ) : $F{height})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement key="" style="Row" x="399" y="0" width="91" height="30" uuid="fb222d40-2fe8-413a-a682-737c8dd76dfb"/>
+				<reportElement key="" style="Row" x="429" y="0" width="60" height="30" uuid="fb222d40-2fe8-413a-a682-737c8dd76dfb"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -388,7 +409,7 @@ Tel: 03-5886 2985]]></text>
 				<textFieldExpression><![CDATA[($F{final_price} % 1 == 0) ? String.format("%.0f", $F{final_price} ) : $F{final_price}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="" style="Row" x="490" y="0" width="64" height="30" uuid="2ffea067-a759-458c-84e4-e7d3188856aa"/>
+				<reportElement key="" style="Row" x="489" y="0" width="64" height="30" uuid="2ffea067-a759-458c-84e4-e7d3188856aa"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -412,6 +433,19 @@ Tel: 03-5886 2985]]></text>
 					<font fontName="WenDingPLJianBaoSong" size="11" pdfFontName="WenDingPLJianBaoSong" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" style="Row" x="369" y="0" width="60" height="30" uuid="85c255b5-3ff0-493c-8ed5-e3e0121f4be7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{is_direct_price} == true ? $F{quantity} : "-"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -114,9 +114,11 @@ $(document).ready(function(){
 						if(data[i].directPrice == true){
 							$('#createWidthDiv').hide();
 							$('#createHeightDiv').hide();
+							$('#createQuantityDiv').show();
 						}else{
 							$('#createWidthDiv').show();
 							$('#createHeightDiv').show();
+							$('#createQuantityDiv').hide();
 						}
 						break;
 					}
@@ -142,9 +144,13 @@ $(document).ready(function(){
 						}else
 							$('#price').val(data[i].price);
 						if(data[i].directPrice == true){
-							hideWidthHeightDiv();
+							$('#widthDiv').hide();
+							$('#heightDiv').hide();
+							$('#quantityDiv').show();
 						}else{
-							showWidthHeightDiv();
+							$('#widthDiv').show();
+							$('#heightDiv').show();
+							$('#quantityDiv').hide();
 						}
 						break;
 					}
@@ -217,7 +223,15 @@ $(document).ready(function(){
 					}else
 						return true;
 				}
-			}
+			},
+			quantity: {
+				required: function(){
+					if($('#type').find('option:selected').attr('direct-price') == "true"){
+						return true;
+					}else
+						return false;
+				}
+			},
 		}
 		
 	});
@@ -228,6 +242,8 @@ $(document).ready(function(){
 			if($('#type').find('option:selected').attr('direct-price') == "true"){
 				$('#width').val(null);
 				$('#height').val(null);
+			}else{
+				$('#quantity').val(null);
 			}
 			var parameter = $('#productDetailForm').serialize();
 			var spinner = $('#loader');
@@ -290,7 +306,15 @@ $(document).ready(function(){
 					}else
 						return true;
 				}
-			}
+			},
+			createQuantity: {
+				required: function(){
+					if($('#createType').find('option:selected').attr('direct-price') == "true"){
+						return true;
+					}else
+						return false;
+				}
+			},
 		}
 		
 	});
@@ -301,6 +325,8 @@ $(document).ready(function(){
 			if($('#createType').find('option:selected').attr('direct-price') == "true" ){
 				$('#createWidth').val(null);
 				$('#createHeight').val(null);
+			}else{
+				$('#createQuantity').val(null);
 			}
 			var parameter = $('#createProductDetailForm').serialize();
 			var spinner = $('#loader');
@@ -345,18 +371,20 @@ function rendertable(){
 			$.each(data.productDetail, function(index, item) {
 				var isLastElement = index == data.productDetail.length -1;
 				let desc = item.description == null? "": item.description;
-				let totalPrice = item.type.directPrice == true? item.finalPrice : (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
+				let totalPrice = item.type.directPrice == true? item.finalPrice * item.quantity : (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
 				let width = item.type.directPrice == true? "-" : item.width;
 				let height = item.type.directPrice == true? "-" : item.height;
 				let ft = item.type.directPrice == true? "-" :  Math.round(((item.width)/304.8) * 10) / 10;
+				let quantity = item.type.directPrice == true? item.quantity : '-';
 				index += 1;
 				tableBodyHtml += "<tr>"
 						+ '<td>' + index + '</td>'
 						+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
 						+ '<td>' + desc + '</td>'
 						+ '<td>' + width + '</td>'
-						+ '<td>' + ft  + '</td>'
-						+ '<td>' + height + '</td>'
+						+ '<td>' + height  + '</td>'
+						+ '<td>' + ft + '</td>'
+						+ '<td>' + quantity + '</td>'
 						+ '<td>' + item.finalPrice + '</td>'
 						+ '<td>' + totalPrice + '</td>'
 						+ '<td>'
@@ -370,6 +398,7 @@ function rendertable(){
 					$('#createLineNumber').val(this.productLineNumber + 1);
 					$('#createLineNumberShow').val(index+1);
 					tableBodyHtml += "<tr>"
+					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
 					+ '<td></td>'
@@ -412,10 +441,17 @@ function editProductDetail(productNumber, lineNumber, index){  //Open edit produ
 			$('#type').val(data.type.id);
 			$('#width').val(data.width);
 			$('#height').val(data.height);
+			$('#quantity').val(data.quantity);
 			$('#price').val(data.finalPrice);
 			$('#description').val(data.description);
 			if(data.type.directPrice==true){
-				hideWidthHeightDiv();
+				$('#widthDiv').hide();
+				$('#heightDiv').hide();
+				$('#quantityDiv').show();
+			}else{
+				$('#widthDiv').show();
+				$('#heightDiv').show();
+				$('#quantityDiv').hide();
 			}
 		},
 		error : function(jgXHR) {
@@ -563,16 +599,17 @@ function deleteData(productNumber, lineNumber) {
 										</div>
 										<div class='col-xs-12'>
 											<div class='table-responsive orders-list'>
-												<table id="table" class='table table-striped table-hover' style="width:80%">
+												<table id="table" class='table table-striped table-hover' style="width:90%">
 													<thead>
 														<tr>
 															<th style="width:5%">#</th>
 															<th style="width:15%">Type</th>
 															<th>Description</th>
 															<th>Width</th>
-															<th>FT</th>
 															<th>Height</th>
-															<th style="width:10%">Price per service</th>
+															<th>Ft</th>
+															<th>Quantity</th>
+															<th style="width:10%">Price</th>
 															<th style="width:10%">Total price</th>
 															<th>Actions</th>
 														</tr>
@@ -655,7 +692,13 @@ function deleteData(productNumber, lineNumber) {
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="width">Description</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="description" name="description" value="">
+								<textarea class="form-control" id="description" name="description" rows="3" style='width:60%;'></textarea>
+							</div>
+						</div>
+						<div class="form-group row" id="quantityDiv">
+							<label class="col-sm-3 col-form-label" for="width">Quantity</label>
+							<div class="col-sm-9">
+								<input type="number" class="form-control" id="quantity" name="quantity" value="" min="1" step="1">
 							</div>
 						</div>
 						<div class="form-group row" id="widthDiv">
@@ -719,7 +762,13 @@ function deleteData(productNumber, lineNumber) {
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="width">Description</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="createDescription" name="createDescription" value="">
+								<textarea class="form-control" id="createDescription" name="createDescription" rows="3" style='width:60%;'></textarea>
+							</div>
+						</div>
+						<div class="form-group row" id="createQuantityDiv">
+							<label class="col-sm-3 col-form-label" for="createWidth">Quantity</label>
+							<div class="col-sm-9">
+								<input type="number" class="form-control" id="createQuantity" name="createQuantity" value="" min="1" step="1">
 							</div>
 						</div>
 						<div class="form-group row" id="createWidthDiv">

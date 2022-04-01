@@ -160,18 +160,19 @@ var storedCurrentpage = 1;
 				$.each(data.productDetail, function(index, item) {
 					var isLastElement = index == data.productDetail.length -1;
 					let desc = item.description == null? "": item.description;
-					let totalPrice = item.type.directPrice == true? item.finalPrice : (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
+					let totalPrice = item.type.directPrice == true? item.finalPrice * item.quantity : (item.finalPrice * Math.round(((item.width)/304.8) * 10) / 10);
 					let width = item.type.directPrice == true? "-" : item.width;
 					let height = item.type.directPrice == true? "-" : item.height;
 					let ft = item.type.directPrice == true? "-" :  Math.round(((item.width)/304.8) * 10) / 10;
+					let quantity = item.type.directPrice == true? item.quantity : '-';
 					index += 1;
 					tableBodyHtml += "<tr>"
 							+ '<td>' + index + '</td>'
 							+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
-							+ '<td>' + desc + '</td>'
 							+ '<td>' + width + '</td>'
-							+ '<td>' + ft  + '</td>'
-							+ '<td>' + height + '</td>'
+							+ '<td>' + height  + '</td>'
+							+ '<td>' + ft + '</td>'
+							+ '<td>' + quantity + '</td>'
 							+ '<td>' + item.finalPrice + '</td>'
 							+ '<td>' + totalPrice + '</td>'
 							+ '</tr>';
@@ -181,6 +182,7 @@ var storedCurrentpage = 1;
 						$('#createLineNumber').val(this.productLineNumber + 1);
 						$('#createLineNumberShow').val(index+1);
 						tableBodyHtml += "<tr>"
+						+ '<td></td>'
 						+ '<td></td>'
 						+ '<td></td>'
 						+ '<td></td>'
@@ -234,7 +236,7 @@ var storedCurrentpage = 1;
 			var totalPrice = 0;
 			var productDetailList = this.productDetail;
 			$.each(productDetailList, function(index, pd) {
-				totalPrice +=  pd.type.directPrice == true? pd.finalPrice : (pd.finalPrice * Math.round(((pd.width)/304.8) * 10) / 10);
+				totalPrice +=  pd.type.directPrice == true? pd.finalPrice * pd.quantity : (pd.finalPrice * Math.round(((pd.width)/304.8) * 10) / 10);
 			});
 			tableBodyHtml += '<tr>'
 					+ '<td><a href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
@@ -458,11 +460,11 @@ var storedCurrentpage = 1;
 												<tr>
 													<th>Line number</th>
 													<th>Type</th>
-													<th>Description</th>
 													<th>Width</th>
-													<th>FT</th>
 													<th>Height</th>
-													<th>Price per service</th>
+													<th>Ft</th>
+													<th>Quantity</th>
+													<th>Price</th>
 													<th>Total price</th>
 												</tr>
 											</thead>
