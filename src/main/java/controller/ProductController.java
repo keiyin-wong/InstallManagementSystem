@@ -75,6 +75,12 @@ public class ProductController {
 		return productDAO.getProductList(1, 1000);
 	}
 	
+	@RequestMapping(value = "/getProductLast", method = RequestMethod.GET)
+	public @ResponseBody List<Product> getProductLast() {
+		System.out.println("Getting price");
+		return productDAO.getProductList(0, 1);
+	}
+	
 	@RequestMapping(value = "/productListPag", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> productListPag(@RequestParam(required=false, defaultValue = "1")int currentPage, 
 			@RequestParam(required=false, defaultValue = "10")int currentLimit) {
@@ -263,7 +269,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="/generateProductDetailReport.do")
-	public void generateProductDetailReport(@RequestParam String productNumber, HttpServletRequest request, HttpServletResponse response) {
+	public void generateProductDetailReport(@RequestParam String productNumber, @RequestParam(required=false, defaultValue = "1")int inline, HttpServletRequest request, HttpServletResponse response) {
 		
 		// Method 1, used with the JasperReportMultipleViewFormat
 		
@@ -288,7 +294,11 @@ public class ProductController {
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameterMap, ds.getConnection());
 			
 			 response.setContentType("application/pdf");
-	         response.addHeader("Content-disposition", "inline; filename=" +filename);
+			 if(inline == 1) {
+				 response.addHeader("Content-disposition", "inline; filename=" +filename);
+			 }else {
+				 response.addHeader("Content-disposition", "attachment; filename=" +filename);
+			 }
 	         OutputStream outputStream = response.getOutputStream();
 	         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
 		} catch (JRException e) {

@@ -26,44 +26,46 @@ CREATE TABLE `installation_type` (
   `desc_chinese` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `diff_price` tinyint(1) NOT NULL DEFAULT 0,
   `price` double DEFAULT NULL,
+  `is_direct_price` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `installation_type` */
 
-insert  into `installation_type`(`id`,`desc_english`,`desc_chinese`,`diff_price`,`price`) values 
-(1,'wall unit','上座柜',1,20),
-(2,'base unit','下座柜',0,20),
-(3,'concrete top b/unit','石犀桌',0,20),
-(4,'tv cabinet & dressing table','电视机和梳妆桌',0,20),
-(5,'wardrobe(swing/sliding)','壁柜(开门/汤门)',0,20),
-(6,'hi fi glass door',NULL,0,20),
-(7,'tall unit','高柜',0,20),
-(8,'ep (big)','大 ep',0,20),
-(9,'ep (small)','小 ep',0,20),
-(10,'canopy','飞板',0,20),
-(11,'modify cabinet per unit',NULL,0,20),
-(12,'drawer (normal)','柜桐(普通)',0,80),
-(13,'drawer (dwd)','柜桐(dwd)',0,20),
-(14,'pull out basket','拉篮(normal)',0,20),
-(15,'lock','柜桐锁头',0,20),
-(16,'sink opening sink','盘开洞',0,60),
-(17,'hob opening','煮食炉开洞',0,20),
-(18,'install hood (slim)','安装平面油烟机',0,20),
-(19,'install hood (chimney)','安装白钢油烟机',0,20),
-(20,'oven','oven',0,20),
-(21,'plug point','拉插头',0,20),
-(22,'plug point (add)','拉插头再加插头',0,20),
-(23,'eye ball (beaufix)','小型灯(beaufix)',0,20),
-(24,'eye ball (normal/t5)','小型灯t5',0,20),
-(25,'dish rack','安装碟架',0,20),
-(26,'magic corner','特别拉篮安装',0,20),
-(27,'tall larder','高柜拉篮安装',0,20),
-(28,'gas spring',NULL,0,20),
-(29,'arm c',NULL,0,20),
-(30,'150mm pull out basket',NULL,0,20),
-(31,'computer, cooker hood hole',NULL,0,20),
-(32,'others',NULL,0,NULL);
+insert  into `installation_type`(`id`,`desc_english`,`desc_chinese`,`diff_price`,`price`,`is_direct_price`) values 
+(1,'wall unit','上座柜',1,20,0),
+(2,'base unit','下座柜',0,20,0),
+(3,'concrete top b/unit','石犀桌',0,20,0),
+(4,'tv cabinet & dressing table','电视机和梳妆桌',0,50,1),
+(5,'wardrobe(swing/sliding)','壁柜(开门/汤门)',0,40,0),
+(6,'hi fi glass door',NULL,0,20,0),
+(7,'tall unit','高柜',0,20,0),
+(8,'ep (big)','大 ep',0,10,1),
+(9,'ep (small)','小 ep',0,6,1),
+(10,'canopy','飞板',0,20,0),
+(11,'modify cabinet per unit',NULL,0,20,0),
+(12,'drawer (normal)','柜桐(普通)',0,80,0),
+(13,'drawer (dwd)','柜桐(dwd)',0,20,0),
+(14,'pull out basket','拉篮(normal)',0,20,0),
+(15,'lock','柜桐锁头',0,20,0),
+(16,'sink opening sink','盘开洞',0,60,0),
+(17,'hob opening','煮食炉开洞',0,20,0),
+(18,'install hood (slim)','安装平面油烟机',0,50,1),
+(19,'install hood (chimney)','安装白钢油烟机',0,20,0),
+(20,'oven','oven',0,20,0),
+(21,'plug point','拉插头',0,20,0),
+(22,'plug point (add)','拉插头再加插头',0,20,0),
+(23,'eye ball (beaufix)','小型灯(beaufix)',0,20,0),
+(24,'eye ball (normal/t5)','小型灯t5',0,20,0),
+(25,'dish rack','安装碟架',0,20,0),
+(26,'magic corner','特别拉篮安装',0,20,0),
+(27,'tall larder','高柜拉篮安装',0,20,0),
+(28,'gas spring',NULL,0,20,0),
+(29,'arm c',NULL,0,20,0),
+(30,'150mm pull out basket',NULL,0,20,0),
+(31,'computer, cooker hood hole',NULL,0,20,0),
+(32,'others','其他',0,NULL,1),
+(33,'shoes cabinet ft',NULL,0,38,0);
 
 /*Table structure for table `installation_type_diff_fees` */
 
@@ -112,8 +114,11 @@ CREATE TABLE `product` (
 /*Data for the table `product` */
 
 insert  into `product`(`product_number`,`date`) values 
-('10001','2022-03-29'),
-('12951','2022-03-29');
+('12951','2022-04-01'),
+('12952','2022-04-01'),
+('12953','2022-04-01'),
+('12954','2022-04-01'),
+('12955','2022-04-01');
 
 /*Table structure for table `product_details` */
 
@@ -126,6 +131,8 @@ CREATE TABLE `product_details` (
   `width` double DEFAULT NULL,
   `height` double DEFAULT NULL,
   `final_price` double DEFAULT NULL,
+  `desc` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quantity` bigint(11) DEFAULT NULL,
   PRIMARY KEY (`product_number`,`product_line_number`),
   KEY `type` (`type`),
   CONSTRAINT `product_details_ibfk_1` FOREIGN KEY (`type`) REFERENCES `installation_type` (`id`),
@@ -134,11 +141,28 @@ CREATE TABLE `product_details` (
 
 /*Data for the table `product_details` */
 
-insert  into `product_details`(`product_number`,`product_line_number`,`type`,`width`,`height`,`final_price`) values 
-('12951',1,1,2280,900,24),
-('12951',2,1,900,500,20),
-('12951',3,2,4950,680,20),
-('12951',4,13,1300,1,20);
+insert  into `product_details`(`product_number`,`product_line_number`,`type`,`width`,`height`,`final_price`,`desc`,`quantity`) values 
+('12951',1,1,2280,900,24,'',0),
+('12951',2,1,900,500,20,'',0),
+('12951',3,2,4938,680,20,'这个不知道怎样计算',0),
+('12951',4,32,0,0,80,'shoe cabinet',1),
+('12951',5,8,0,0,10,'',2),
+('12951',6,9,0,0,6,'',2),
+('12952',1,5,2660,1940,40,'8.72 vs 8.7',0),
+('12952',2,4,0,0,50,'',1),
+('12952',3,8,0,0,10,'',2),
+('12953',1,5,2150,750,40,'跟单的不对',0),
+('12953',2,2,1645,350,20,'不知道怎样计算',0),
+('12953',3,8,0,0,10,'',2),
+('12954',1,32,0,0,200,'一工',1),
+('12955',1,1,1600,970,24,'',0),
+('12955',2,1,2600,650,20,'',0),
+('12955',3,9,0,0,6,'',6),
+('12955',4,2,4370,700,20,'',0),
+('12955',5,18,0,0,50,'',1),
+('12955',6,33,600,910,38,'',0),
+('12955',7,5,2950,600,40,'',0),
+('12955',8,8,0,0,10,'',3);
 
 /*Table structure for table `users` */
 

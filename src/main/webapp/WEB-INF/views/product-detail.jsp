@@ -89,8 +89,8 @@ $(document).ready(function(){
 	        $.each(data, function() {
 		        let desc_chinese = this.desc_chinese == null ? '' : this.desc_chinese;
 		        let desc_eng = this.desc_eng == null ? '' : this.desc_eng;
-	            $el.append($("<option></option>").attr("value", this.id).attr("direct-price", this.directPrice).html(desc_chinese+" ("+desc_eng+")"));
-	            $createEl.append($("<option></option>").attr("value", this.id).attr("direct-price", this.directPrice).html(desc_chinese+" ("+desc_eng+")"));
+	            $el.append($("<option></option>").attr("value", this.id).attr("direct-price", this.directPrice).html(desc_eng+" ("+desc_chinese+")"));
+	            $createEl.append($("<option></option>").attr("value", this.id).attr("direct-price", this.directPrice).html(desc_eng+" ("+desc_chinese+")"));
 	        });
 
 	    	$('#createType').change(function(){
@@ -379,7 +379,7 @@ function rendertable(){
 				index += 1;
 				tableBodyHtml += "<tr>"
 						+ '<td>' + index + '</td>'
-						+ '<td>' + item.type.desc_chinese + ' (' + item.type.desc_eng + ')</td>'
+						+ '<td>' + item.type.desc_eng + ' (' + item.type.desc_chinese + ')</td>'
 						+ '<td>' + desc + '</td>'
 						+ '<td>' + width + '</td>'
 						+ '<td>' + height  + '</td>'
@@ -544,7 +544,7 @@ function deleteData(productNumber, lineNumber) {
 								</div>
 							</form>
 						</div>
-						<div class='col-xs-6'>
+						<!-- <div class='col-xs-6'>
 								<FORM NAME="Calc" onsubmit="return false;">
 									<TABLE BORDER=4>
 										<TR>
@@ -587,7 +587,7 @@ function deleteData(productNumber, lineNumber) {
 										</TR>
 									</TABLE>
 								</FORM>
-						</div>
+						</div> -->
 						<div class='col-xs-12'>
 							<div class='row attribute-row' style="margin-bottom: 10px;">
 								<div class='col-xs-12' title='Order Details:'>

@@ -48,6 +48,18 @@
 
 
 <style>
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.75) url(${pageContext.request.contextPath}/images/loading.gif) no-repeat center center;
+  z-index: 10000;
+  background-size: 50px 50px
+}
 .pagination ul > .active {
 	background-color: #f5f5f5;
 }
@@ -204,7 +216,11 @@ var storedCurrentpage = 1;
 	}
 
 	function displayPage(currentPage){
-		storedCurrentpage = currentPage;
+		if(currentPage !=null){
+			storedCurrentpage = currentPage;
+		}
+		var spinner = $('#loader');
+		spinner.show();
 		$.ajax({
 			type : "GET",
 			url : "${pageContext.request.contextPath}/product/productListPag?currentPage="+storedCurrentpage+"&currentLimit=10",
@@ -213,8 +229,10 @@ var storedCurrentpage = 1;
 				var productList = data.result;
 				renderTable(productList);
 				displayLinks(data);
+				spinner.hide();
 			},
 			error : function(jgXHR) {
+				spinner.hide();
 				alert(jgXHR.responseText);
 			},
 		});
@@ -239,7 +257,7 @@ var storedCurrentpage = 1;
 				totalPrice +=  pd.type.directPrice == true? pd.finalPrice * pd.quantity : (pd.finalPrice * Math.round(((pd.width)/304.8) * 10) / 10);
 			});
 			tableBodyHtml += '<tr>'
-					+ '<td><a href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
+					+ '<td><a target="_blank" href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
 					+ '<td>'
 					+ this.date.dayOfMonth + ' ' +this.date.month + ' ' + this.date.year
 					+ '</td>'
@@ -249,14 +267,26 @@ var storedCurrentpage = 1;
 					+ '<td>'
 					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>'
 					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+')">Delete</button>'
-					+ '<a class="btn btn-info btn-sm" type="button" target="_blank" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?productNumber='+this.productNumber+'">Print</a>'
+					+ '<a class="btn btn-info btn-sm" type="button" target="_blank" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?inline=0&productNumber='+this.productNumber+'">Print</a>'
 					+ '</td>' + '</tr>';
 		});
 		$('#productTableBody').html(tableBodyHtml);
 	}
 
-	function createProductModal(){
-		$('#createProductNumber').val("");
+	function createProductModal(){  //Open create product modal
+		$.ajax({
+			type: "GET",
+			url: "${pageContext.request.contextPath}/product/getProductLast",
+			data: "",
+			success: function(data) {
+				if(data.length != 0){
+					$('#createProductNumber').val(Number(data[0].productNumber) + 1);
+				}
+			},
+			error : function(jgXHR){
+				$('#createProductNumber').val("");
+			},
+		});	
 		$('#createProductDate').val(new Date().toISOString().substring(0, 10));
 		$('#createProductModel').modal();
 	}
@@ -358,6 +388,10 @@ var storedCurrentpage = 1;
 										onclick=createProductModal()
 										style="display: inline-block; margin-top: 10px; background-color: transparent; color: #428bca; border: 1px solid #ddd;">
 										Add a new order</button>
+									<button class="btn btn-primary" type="button"
+										onclick=displayPage(null)
+										style="display: inline-block; margin-top: 10px; background-color: transparent; color: #428bca; border: 1px solid #ddd;">
+										Refresh</button>
 								</div>
 								<div class='tab-pane active' id='filter' role='tabpanel'>
 									<div class='row'></div>
@@ -427,7 +461,7 @@ var storedCurrentpage = 1;
 
 	<div class="modal fade" id="viewModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header border-bottom-0">
 					<h5 class="modal-title" id="exampleModalLabel">View Order</h5>
@@ -503,7 +537,7 @@ var storedCurrentpage = 1;
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="email1">Order Number</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="createProductNumber" name="createProductNumber" value="" required>
+								<input type="number" class="form-control" id="createProductNumber" name="createProductNumber" min="1" step="1" value="" required>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -521,6 +555,8 @@ var storedCurrentpage = 1;
 			</div>
 		</div>
 	</div>
+	
+	<div id="loader"></div>
 
 
 
