@@ -77,6 +77,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 $(document).ready(function(){
+	document.title = urlParams.get('productNumber');
 	$.ajax({
 	    type: "GET",
 	    url: "getInstallTypeList",

@@ -38,14 +38,18 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 		</property>
 	</bean>
 	
+	<bean id="propertyConfiguration" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:core.properties" />
+	</bean>
+	
 	<bean class="org.springframework.web.servlet.view.XmlViewResolver"
 		p:location="/WEB-INF/jasper-views.xml"  p:order="0" />
 	
 	<bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">    
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>    
-		<property name="url" value="jdbc:mysql://localhost:3306/installation?useUnicode=true&amp;characterEncoding=UTF-8"></property>    
-		<property name="username" value="keiyin"></property>    
-		<property name="password" value="keiyin"></property>    
+		<property name="url" value="${db.connection}"></property>    
+		<property name="username" value="${db.username}"></property>    
+		<property name="password" value="${db.password}"></property>    
 	</bean>
 	
 	<bean id="jt" class="org.springframework.jdbc.core.JdbcTemplate">    

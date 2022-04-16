@@ -107,7 +107,7 @@ var storedCurrentpage = 1;
 					spinner.hide();
 					alert(jgXHR.responseText);
 				}
-			}).done(function(){spinner.hide();});
+			});
 			
 		});
 	});
@@ -148,7 +148,7 @@ var storedCurrentpage = 1;
 				alert(jgXHR.responseText);
 			}
 		}).done(function(){
-			spinner.hide();
+			//spinner.hide();
 			$('#deleteModal').modal('hide'); // now close modal
 		});
 	}
@@ -229,12 +229,14 @@ var storedCurrentpage = 1;
 				var productList = data.result;
 				renderTable(productList);
 				displayLinks(data);
-				spinner.hide();
+				
 			},
 			error : function(jgXHR) {
 				spinner.hide();
 				alert(jgXHR.responseText);
 			},
+		}).done(function(){
+			spinner.hide();
 		});
 	}
 
@@ -265,9 +267,10 @@ var storedCurrentpage = 1;
 					+ 'RM' + totalPrice
 					+ '</td>'
 					+ '<td>'
-					+ '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>'
+					// + '<button class="btn btn-primary btn-sm" type="button" value="qwe" onclick="viewModal('+this.productNumber+')">View</button>' //This is one for view modal
+					+ '<a class="btn btn-primary btn-sm" type="button" target="_blank" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?inline=1&productNumber='+this.productNumber+'">View</a>'
 					+ '<button class="btn btn-danger btn-sm" type="button" value="qwe" onclick="confirmDeleteModal('+this.productNumber+')">Delete</button>'
-					+ '<a class="btn btn-info btn-sm" type="button" target="_blank" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?inline=0&productNumber='+this.productNumber+'">Print</a>'
+					+ '<a class="btn btn-info btn-sm" type="button" target="_blank" href="${pageContext.request.contextPath}/product/generateProductDetailReport.do?inline=0&productNumber='+this.productNumber+'">Download</a>'
 					+ '</td>' + '</tr>';
 		});
 		$('#productTableBody').html(tableBodyHtml);
