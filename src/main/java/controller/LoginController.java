@@ -40,7 +40,6 @@ public class LoginController {
 				
 			}
 		} catch (ServletException | IOException  | EmptyResultDataAccessException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return new ModelAndView("login");
 		}
