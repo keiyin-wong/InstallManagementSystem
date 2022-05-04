@@ -259,7 +259,7 @@ var storedCurrentpage = 1;
 				totalPrice +=  pd.type.directPrice == true? pd.finalPrice * pd.quantity : (pd.finalPrice * Math.round(((pd.width)/304.8) * 10) / 10);
 			});
 			tableBodyHtml += '<tr>'
-					+ '<td><a target="_blank" href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
+					+ '<td><a href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
 					+ '<td>'
 					+ this.date.dayOfMonth + ' ' +this.date.month + ' ' + this.date.year
 					+ '</td>'
@@ -277,6 +277,7 @@ var storedCurrentpage = 1;
 	}
 
 	function createProductModal(){  //Open create product modal
+		$('#createProductNumber').val("");
 		$.ajax({
 			type: "GET",
 			url: "${pageContext.request.contextPath}/product/getProductLast",

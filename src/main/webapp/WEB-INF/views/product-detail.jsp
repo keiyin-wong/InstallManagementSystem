@@ -256,7 +256,7 @@ $(document).ready(function(){
 				data: parameter,
 				/* contentType: "charset=utf-8", */
 				success: function(data){
-					spinner.hide();
+					//spinner.hide();
 					rendertable();
 					$('#editModal').modal('hide');
 				},
@@ -264,7 +264,7 @@ $(document).ready(function(){
 					spinner.hide();
 					alert(jgXHR.responseText);
 				}
-			}).done(function(){spinner.hide();});
+			});
 		}
 	});
 
@@ -279,14 +279,14 @@ $(document).ready(function(){
 			cache : false,
 			data: parameter,
 			success: function(data){
-				spinner.hide();
+				//spinner.hide();
 				rendertable();
 			},
 			error : function(data){
 				spinner.hide();
 				alert(jgXHR.responseText);
 			}
-		}).done(function(){spinner.hide();});
+		});
 		
 	});
 	
@@ -338,7 +338,7 @@ $(document).ready(function(){
 				cache : false,
 				data: parameter,
 				success: function(data){
-					spinner.hide();
+					//spinner.hide();
 					rendertable();
 					$('#createProductDetailModal').modal('hide');
 				},
@@ -346,7 +346,7 @@ $(document).ready(function(){
 					spinner.hide();
 					alert(jgXHR.responseText);
 				}
-			}).done(function(){spinner.hide();});
+			});
 		}	
 	});
 
@@ -354,6 +354,8 @@ $(document).ready(function(){
 });
 
 function rendertable(){
+	var spinner = $('#loader');
+	spinner.show();
 	$.ajax({
 		type : "GET",
 		url : "getProduct?productNumber="+urlParams.get('productNumber'),
@@ -417,6 +419,8 @@ function rendertable(){
 		error : function(jgXHR) {
 			alert(jgXHR.responseText);
 		},
+	}).done(function(){
+		spinner.hide();
 	});
 }
 
@@ -431,6 +435,8 @@ function showWidthHeightDiv(){
 }
 
 function editProductDetail(productNumber, lineNumber, index){  //Open edit product detail modal
+	var spinner = $('#loader');
+	spinner.show();
 	$('#editModal').modal();
 	$.ajax({
 		type : "GET",
@@ -456,8 +462,11 @@ function editProductDetail(productNumber, lineNumber, index){  //Open edit produ
 			}
 		},
 		error : function(jgXHR) {
+			spinner.hide();
 			alert(jgXHR.responseText);
 		}
+	}).done(function(){
+		spinner.hide();
 	});
 }
 
@@ -493,7 +502,7 @@ function deleteData(productNumber, lineNumber) {
 			alert(jgXHR.responseText);
 		}
 	}).done(function(){
-		spinner.hide();
+		//spinner.hide();
 		$('#deleteModal').modal('hide'); // now close modal
 	});
 }
@@ -703,21 +712,21 @@ function deleteData(productNumber, lineNumber) {
 							</div>
 						</div>
 						<div class="form-group row" id="widthDiv">
-							<label class="col-sm-3 col-form-label" for="width">Width</label>
+							<label class="col-sm-3 col-form-label" for="width">Width (宽度)</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="width" name="width" value="" min="1" step="0.01">
+								<input type="number" class="form-control" id="width" name="width" value="" min="0" step="0.01">
 							</div>
 						</div>
 						<div class="form-group row" id="heightDiv">
-							<label class="col-sm-3 col-form-label" for="height">Height</label>
+							<label class="col-sm-3 col-form-label" for="height">Height (高度)</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="height" name="height" value="" min="1" step="0.01">
+								<input type="number" class="form-control" id="height" name="height" value="" min="0" step="0.01">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="price">Price per service</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="price" name="price" value="" min="1" step="0.01" required>
+								<input type="number" class="form-control" id="price" name="price" value="" min="0" step="0.01" required>
 							</div>
 						</div>
 						
@@ -773,21 +782,21 @@ function deleteData(productNumber, lineNumber) {
 							</div>
 						</div>
 						<div class="form-group row" id="createWidthDiv">
-							<label class="col-sm-3 col-form-label" for="createWidth">Width</label>
+							<label class="col-sm-3 col-form-label" for="createWidth">Width (宽度)</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="createWidth" name="createWidth" value="" min="1" step="1">
+								<input type="number" class="form-control" id="createWidth" name="createWidth" value="" min="0" step="0.01">
 							</div>
 						</div>
 						<div class="form-group row" id="createHeightDiv">
-							<label class="col-sm-3 col-form-label" for="createHeight">Height</label>
+							<label class="col-sm-3 col-form-label" for="createHeight">Height (高度)</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="createHeight" name="createHeight" value="" min="1" step="1">
+								<input type="number" class="form-control" id="createHeight" name="createHeight" value="" min="0" step="0.01">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label" for="createPrice">Price per service</label>
 							<div class="col-sm-9">
-								<input type="number" class="form-control" id="createPrice" name="createPrice" value="" min="1" step="1" required>
+								<input type="number" class="form-control" id="createPrice" name="createPrice" value="" min="0" step="0.01" required>
 							</div>
 						</div>
 						
