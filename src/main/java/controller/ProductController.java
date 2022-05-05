@@ -50,7 +50,7 @@ public class ProductController {
 	public ModelAndView showMessage(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("in controller");
 		HttpSession session=request.getSession();  
-		 if(session!=null){  
+		 if(session.getAttribute("userName")!=null){
 			 ModelAndView mv = new ModelAndView("product");
 			return mv;
 		 }else {

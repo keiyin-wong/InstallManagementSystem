@@ -9,7 +9,7 @@
 <body>
     <div style="text-align: center">
         <h1>Staff Login</h1>
-        <form action="login" method="post">
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <label for="userName">User Name:</label>
             <input name="userName" size="30" />
             <br><br>
