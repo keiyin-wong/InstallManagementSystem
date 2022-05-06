@@ -45,7 +45,9 @@ public class ProductDAO {
 	        	List<ProductDetail> pdList = null;
 	        	pdList = getProductDetailList(rs.getString("product_number"));
 	        	p.setProductNumber(rs.getString("product_number"));
-	        	p.setDate(rs.getDate("date").toLocalDate());
+	        	if(rs.getDate("date")!=null) {
+	        		p.setDate(rs.getDate("date").toLocalDate());
+	        	}
 	        	p.setProductDetail(pdList);
 	            return p;
 			}});
@@ -65,14 +67,11 @@ public class ProductDAO {
 				+ "pd.desc, "
 				+ "pd.quantity, "
 				+ "it.diff_price, "
-				+ "it.is_direct_price, "
-				+ "(CASE WHEN it.diff_price = 1 THEN itdf.price WHEN it.diff_price = 0 THEN it.price END) AS price "
+				+ "it.is_direct_price "
 				+ "FROM `product` p "
 				+ "JOIN `product_details` pd ON p.product_number = pd.product_number "
 				+ "JOIN `installation_type` it ON pd.type = it.id "
-				+ "LEFT JOIN `installation_type_diff_fees` itdf ON itdf.type = it.id "
 				+ "WHERE (p.product_number = "+productNum+") "
-				+ "AND ((it.diff_price = 1) AND (itdf.size = TRUNCATE(pd.height, -2)) OR it.diff_price = 0) "
 				+ "AND (pd.product_line_number = " + lineNum + ")"
 				+ "ORDER BY pd.product_line_number ASC";
 		
@@ -92,7 +91,7 @@ public class ProductDAO {
 	            it.setDesc_eng(rs.getString("desc_english"));
 	            it.setDesc_chinese(rs.getString("desc_chinese"));
 	            it.setDiff_price(rs.getBoolean("diff_price"));
-	            it.setPrice(rs.getDouble("price"));
+	            it.setPrice(0);
 	            it.setDirectPrice(rs.getBoolean("is_direct_price"));
 	            pd.setType(it);
    
@@ -115,14 +114,11 @@ public class ProductDAO {
 				+ "pd.quantity, "
 				+ "pd.final_price, "
 				+ "it.diff_price, "
-				+ "it.is_direct_price, "
-				+ "(CASE WHEN it.diff_price = 1 THEN itdf.price WHEN it.diff_price = 0 THEN it.price END) AS price "
+				+ "it.is_direct_price "
 				+ "FROM `product` p "
 				+ "JOIN `product_details` pd ON p.product_number = pd.product_number "
 				+ "JOIN `installation_type` it ON pd.type = it.id "
-				+ "LEFT JOIN `installation_type_diff_fees` itdf ON itdf.type = it.id "
-				+ "WHERE (p.product_number = "+productNumber+") AND ( "
-				+ "(it.diff_price = 1) AND (itdf.size = TRUNCATE(pd.height, -2)) OR it.diff_price = 0) "
+				+ "WHERE (p.product_number = "+productNumber+")"
 				+ "ORDER BY pd.product_line_number ASC";
 		
 		return template.query(qry,new RowMapper<ProductDetail>(){    
@@ -141,7 +137,7 @@ public class ProductDAO {
 	            it.setDesc_eng(rs.getString("desc_english"));
 	            it.setDesc_chinese(rs.getString("desc_chinese"));
 	            it.setDiff_price(rs.getBoolean("diff_price"));
-	            it.setPrice(rs.getDouble("price"));
+	            it.setPrice(0);
 	            it.setDirectPrice(rs.getBoolean("is_direct_price"));
 	            pd.setType(it);
    
@@ -193,7 +189,9 @@ public class ProductDAO {
 	        	List<ProductDetail> pdList = null;
 	        	pdList = getProductDetailList(rs.getString("product_number"));
 	        	p.setProductNumber(rs.getString("product_number"));
-	        	p.setDate(rs.getDate("date").toLocalDate());
+	        	if(rs.getDate("date")!=null) {
+	        		p.setDate(rs.getDate("date").toLocalDate());
+	        	}
 	        	p.setProductDetail(pdList);
 	            return p;    
 	        }    

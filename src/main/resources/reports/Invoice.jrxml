@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2022-05-05T14:57:21 -->
+<!-- 2022-05-07T01:37:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="template.engine" value="tabular_template"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -143,7 +143,7 @@ ORDER BY product_line_number ASC;]]>
 				<textFieldExpression><![CDATA[$P{productNumber}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="380" y="30" width="60" height="20" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678"/>
+				<reportElement x="359" y="30" width="81" height="20" uuid="0b3f9342-da78-4cfa-9fc5-2301c4749678"/>
 				<box rightPadding="4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>

@@ -66,7 +66,6 @@
 .pagination ul > li {
     display: inline;
     float: left;
-    padding: 4px 12px;
     line-height: 20px;
     text-decoration: none;
     background-color: #ffffff;
@@ -76,8 +75,9 @@
 	background-color: #f5f5f5;
 }
 
-.pagination ul > li > a{
- 	display: block;
+.pagination ul li a{
+ 	display: inline-block;
+ 	padding: 4px 12px;
   	width: 100%;
 }
 
@@ -255,13 +255,17 @@ var storedCurrentpage = 1;
 		$.each(data, function() {
 			var totalPrice = 0;
 			var productDetailList = this.productDetail;
+			var dateConcat = "-";
 			$.each(productDetailList, function(index, pd) {
 				totalPrice +=  pd.type.directPrice == true? pd.finalPrice * pd.quantity : (pd.finalPrice * Math.round(((pd.width)/304.8) * 10) / 10);
 			});
+			if(this.date != null){
+				dateConcat = this.date.dayOfMonth + ' ' +this.date.month + ' ' + this.date.year;
+			}
 			tableBodyHtml += '<tr>'
 					+ '<td><a href="${pageContext.request.contextPath}/product/productDetail.html?productNumber='+ this.productNumber +'">'+ this.productNumber + "</a></td>"
 					+ '<td>'
-					+ this.date.dayOfMonth + ' ' +this.date.month + ' ' + this.date.year
+					+ dateConcat
 					+ '</td>'
 					+ '<td>'
 					+ 'RM' + totalPrice

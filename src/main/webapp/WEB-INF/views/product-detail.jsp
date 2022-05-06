@@ -107,7 +107,7 @@ $(document).ready(function(){
 				    				$('#createPrice').val(data);
 				    			},
 				    			error : function(jgXHR) {
-				    				alert(jgXHR.responseText);
+				    				//alert(jgXHR.responseText);
 				    			}
 				    		});
 						}else
@@ -139,7 +139,7 @@ $(document).ready(function(){
 				    				$('#price').val(data);
 				    			},
 				    			error : function(jgXHR) {
-				    				alert(jgXHR.responseText);
+				    				//alert(jgXHR.responseText);
 				    			}
 				    		});
 						}else
@@ -174,7 +174,7 @@ $(document).ready(function(){
 		    				$('#createPrice').val(data);
 		    			},
 		    			error : function(jgXHR) {
-		    				alert(jgXHR.responseText);
+		    				//alert(jgXHR.responseText);
 		    			}
 		    		});
 			    }
@@ -196,7 +196,7 @@ $(document).ready(function(){
 		    				$('#price').val(data);
 		    			},
 		    			error : function(jgXHR) {
-		    				alert(jgXHR.responseText);
+		    				//alert(jgXHR.responseText);
 		    			}
 		    		});
 			    }
@@ -362,8 +362,14 @@ function rendertable(){
 		dataType : 'json',
 		success : function(data) {
 			$('#productNumber').val(data.productNumber);
-			let date = new Date(data.date.year, data.date.monthValue-1, data.date.dayOfMonth+1);
-			$('#productDate').val(date.toISOString().slice(0, 10));
+			if(data.date != null){
+				let date = new Date(data.date.year, data.date.monthValue-1, data.date.dayOfMonth+1);
+				$('#productDate').val(date.toISOString().slice(0, 10));
+			}else{
+				$('#productDate').val("");
+			}
+			
+			
 			var tableBodyHtml = "";
 			if (data.productDetail.length == 0) {
 				tableBodyHtml += "<tr><td colspan='6' style='text-align: center;'>No Records Found</td></tr>";
@@ -544,7 +550,7 @@ function deleteData(productNumber, lineNumber) {
 									<label class="string optional col-sm-4 control-label">Date</label>
 									<div class="col-sm-8">
 										<input value="" class="string optional form-control"
-											type="date" name="productDate" id="productDate">
+											type="date" name="productDate" id="productDate" required>
 									</div>
 								</div>
 								<div class="form-group row string optional">
@@ -614,7 +620,7 @@ function deleteData(productNumber, lineNumber) {
 														<tr>
 															<th style="width:5%">#</th>
 															<th style="width:15%">Type</th>
-															<th>Description</th>
+															<th style="width:15%">Description</th>
 															<th>Width</th>
 															<th>Height</th>
 															<th>Ft</th>
